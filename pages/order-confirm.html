@@ -1,0 +1,26 @@
+<div class="scrollable" >
+	<div class="scrollable-content">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>สินค้า</th>
+					<th>ราคาต่อหน่วย</th>
+					<th>จำนวน</th>
+					<th>ราคารวม</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in carts">
+					<td>{{item.name}}</td>
+					<td>{{item.price}}</td>
+					<td> x {{item.count}}</td>
+					<td>{{item.price * item.count | number | new_currency}}</td>
+				<tr>
+				<tr>
+					<td colspan="3">รวม</td>
+					<td >{{sum | number | new_currency}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

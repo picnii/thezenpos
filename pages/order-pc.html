@@ -1,0 +1,42 @@
+<div class="scrollable" style="background:white;">
+	<div class="scrollable-content">
+		
+	
+		<div>
+			<form ng-submit="updateSearch()">
+				<input placeholder="ชื่อสินค้า, รหัสสินค้า, ประเภทสินค้า,  ราคา " class="form-control" type="text" ng-model="q">
+			</form>
+		</div>
+		<table class="table table-striped biz">
+			<thead>
+				<tr>
+					<th>สินค้า</th>
+					<th>ราคาต่อหน่วย</th>
+					<th class="center"  colspan="3">จำนวน</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in items| filter:q ">
+					<td >{{item.name}}</td>
+					<td >{{item.price | number | new_currency}}</td>
+					<td><button class="btn btn-lg" ng-click="item.add()">+</button></td>
+					<td>{{item.count | number}}</td>
+					<td><button class="btn btn-lg" ng-click="item.remove()">-</button></td>
+				</tr>
+				<tr>
+					<td></td>
+					
+					<td>รวม</td>
+					<td  class="center" colspan="3">{{sum | number| new_currency}}</td>
+					
+				</tr>
+			</tbody>
+		</table>
+		<div class="btm-space">
+		</div>
+		<div class="btm-btn" >
+			<button ng-click="sendOrder()" class="btn btn-primary form-control">สั่งซื้อ</button>
+		</div>
+	</div>
+
+</div>

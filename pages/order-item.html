@@ -1,0 +1,32 @@
+<div class="scrollable" style="background:white;">
+	<div class="scrollable-content">
+		<section>
+			<table class="table">
+				<thead>
+					<tr>
+						<th class="center">สินค้า</th>
+						<th class="center">จำนวนที่สั่ง</th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="item in products">
+						<td><div style="text-align:center;">
+							<h4>{{item.name}}</h4>
+							{{item.currentStock}} / {{item.initStock}} 
+						</div></td>
+						<td class="center">{{item.count}}</td>
+						<td><button class="order btn btn-lg" ng-click="item.add()">+</button></td>
+						<td><button class="order btn btn-lg" ng-click="item.remove()">-</button></td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="btm-space">
+			</div>
+			<div class="btm-btn" >
+				<a href="#/order" class="btn btn-primary form-control">Order</a>
+			</div>
+		</section>
+	</div>
+</div>

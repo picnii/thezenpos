@@ -1,0 +1,34 @@
+<div class="scrollable">
+	<div class="scroll-content">
+		<table class="table">
+			<thead>
+				<tr>
+					<th class="col-lg-6">สินค้า</th>
+					<th class="col-lg-2">จำนวน</th>
+					<th class="col-lg-4"></th>
+					
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in items">
+					<td>{{item.name}}</td>
+					<td>{{item.currentStock }} / {{item.initStock}} </td>
+					<td>Keep <switch ng-model="item.tossed"></switch> Toss</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="btm-space">
+</div>
+<div class="btm-btn" >
+	<a href="#/stock" class="btn btn-primary form-control"><i class="fa fa-circle"></i> CLEAR STOCK</a>
+</div>
+<style type="text/css">
+	div.switch
+	{
+		display: inline-block;
+	}
+
+</style>
+<!--<switch ng-model="invoice.payed"></switch>-->

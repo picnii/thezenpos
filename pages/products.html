@@ -1,0 +1,59 @@
+<div class="scrollable">
+	<div class="scrollable-content">
+		<section ng-hide="is_add_new">
+			<table class="table">
+			<thead>
+				<tr>
+					<th>ชื่อ</th>
+					<th>ราคา</th>
+					<th colspan="2">ประเภท</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="product in items" >
+					<td >
+						<span  ng-hide="product.isEdit">{{product.name}}</span>
+						<input ng-show="product.isEdit" type="text" ng-model="product.name">
+					</td>
+					<td>
+						<span  ng-hide="product.isEdit">{{product.price}}</span>
+						<input  ng-show="product.isEdit" type="number" ng-model="product.price">
+					</td>
+					<td>
+						<span  ng-hide="product.isEdit">{{product.type}}</span>
+						<input  ng-show="product.isEdit" type="text" ng-model="product.type">
+					</td>
+					<td>
+						<button  ng-hide="product.isEdit" ng-click="product.isEdit=true" class="btn btn-primary">Edit</button>
+						<button  ng-show="product.isEdit" ng-click="product.save()" class="btn btn-primary">Save</button>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			<div class="btm-space"></div>
+			<div class="btm-btn">
+				<button class="btn  btn-primary form-control" ng-click="is_add_new=true;">ADD NEW</button>
+			</div>
+		</section>
+		<section ng-show="is_add_new">
+			<form role="form">
+				<div class="form-group">
+					<label for="name-input">Name</label>
+					<input ng-model="name" id="name-input" class="form-control" type="text" placeholder="Name">
+				</div>
+				<div class="form-group">
+					<label for="price-input">Price</label>
+					<input ng-model="price" id="price-input" class="form-control" type="number" placeholder="Price">
+				</div>
+				<div class="form-group">
+					<label for="type-input">Type</label>
+					<input ng-model="type" id="type-input" class="form-control" type="text" placeholder="Type">
+				</div>
+				<div class="btm-space"></div>
+				<div class="btm-btn">
+					<button class="btn  btn-primary form-control" ng-click="is_add_new=false;">Save</button>
+				</div>
+			</form>
+		</section>
+	</div>
+</div>

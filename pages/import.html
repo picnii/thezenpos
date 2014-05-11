@@ -1,0 +1,32 @@
+<div class="scrollable">
+	<div class="scrollable-content">
+		<table class="table">
+			<thead>
+				<tr>
+					<td>สินค้า</td>
+					<td>จำนวน</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="import_item in import_items">
+					<td ><select  ng-model="import_item.product" required ng-options="item.name for item in items"></select></td>
+					<td><input  ng-model="import_item.count"></td>
+					<td><button ng-click="delete(import_item)" class="btn btn-danger">-</button></td>
+				</tr>
+				<tr>
+					<td><select ng-model="newImport.product" required ng-options="item.name for item in items">
+</select></td>
+					<td><input ng-model="newImport.count" type="number" placeholder="Quantity"></td>
+					<td><button ng-click="add(newImport)" class="btn btn-primary">ADD</button></td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+</div>
+<div class="btm-space">
+</div>
+<div class="btm-btn" >
+	<a href="#/stock" class="btn btn-primary form-control"><i class="fa fa-download"></i> Import</a>
+</div>
