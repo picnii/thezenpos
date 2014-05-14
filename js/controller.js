@@ -50,7 +50,7 @@ function getRandomColor() {
 function InitCtrl($rootScope, $location, $timeout, Item)
 {
 	$rootScope.appName = "Menu"
-	$rootScope.storeName = "BizHode"
+	$rootScope.storeName = "The Zen Pos"
 
 	//$rootScope.items = Item.query();
 	$rootScope.orders = [];
