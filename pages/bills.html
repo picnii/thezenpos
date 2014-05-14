@@ -1,0 +1,54 @@
+<section style="text-align:center;vertical-align:center">
+	<input type="radio" class="search-btn" ng-value="false" ng-model="search.isPrinted" name="search-filter"><label class="search-label">Show only none-printed</label>
+	<input type="radio" class="search-btn" ng-value="true" ng-model="search.isPrinted" name="search-filter"><label class="search-label">Show only printed</label>
+	<input type="radio" class="search-btn" ng-model="nope" ng-click="resetSearch()" name="search-filter"><label class="search-label">Show All</label>
+</section> 
+<div class="scrollable" style="margin-top:50px;">
+	<div class="scrollable-content">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Time</th>
+					<th>Order</th>
+					<th>Price</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="bill in bills | filter:search" class="is-printed-{{bill.isPrinted}}">
+					<td>{{bill.id}}</td>
+					<td>{{bill.current_time | date:'short'}}</td>
+					<td>{{bill.carts[0].name}}, ...</td>
+					<td>{{bill.sum}}</td>
+					<td><a class="btn btn-primary" ng-href="#/bill/{{bill.id}}">VIEW</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<style type="text/css">
+.table-striped>tbody>tr.is-printed-true:nth-child(odd)>td
+{
+	background-color: #888;
+}
+.table-striped>tbody>tr.is-printed-true:nth-child(even)>td
+{
+	background-color: #666;
+}
+
+input.search-btn
+{
+	
+	height:50px;
+	width: auto;
+	margin-right: 5px;
+}
+
+label.search-label
+{
+	height: 50px;
+	vertical-align: middle;
+}
+
+</style>

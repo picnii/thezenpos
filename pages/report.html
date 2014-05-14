@@ -1,0 +1,50 @@
+<div class="scrollable">
+<section class="scrollable-content">
+	<div style="text-align:center;">
+		<h4>Sales Report</h4>
+		<canvas id="overall-chart" width="480" height="240" ></canvas>
+		<span style="border:1px solid rgba(151,187,205,1);display:inline-block;background:rgba(151,187,205,0.5);width:20px;height:20px"></span>Sales 
+
+	</div>
+	<div>
+		<table id="report-table" class="table">
+			<thead>
+				<tr>
+					<th>Time</th>
+					<th>Bill</th>
+					<th>Name</th>
+					<th>Price per unit</th>
+					<th>Quantity</th>
+					<th>Price</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in reports">
+					<td>{{item.current_time | date:'medium'}}</td>
+					<td>{{item.bill}}</td>
+					<td>{{item.name}}</td>
+					<td>{{item.price}}</td>
+					<td>{{item.count}}</td>
+					<td>{{item.price * item.count}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="btm-space">
+	</div>
+	<div class="btm-btn" >
+		<button onclick="importXLS()" class="btn btn-primary form-control"><i class="fa fa-download"></i> Download .XLS</button>
+	</div>
+</section>
+</div>
+<style type="text/css">
+
+	tr.order-list td a
+	{
+		display:block;
+	    height:100%;
+	    width:100%;
+	    color:black;
+	}
+
+</style>

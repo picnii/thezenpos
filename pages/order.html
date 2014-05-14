@@ -13,9 +13,9 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th>สินค้า</th>
-							
+							<th>สินค้า</th>				
 							<th>จำนวน</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -23,6 +23,10 @@
 							<td>{{item.name}}</td>
 							
 							<td> x {{item.count}}</td>
+							<td><button ng-click="removeFromCart(item,1)" class="btn btn-danger">-</button>
+								<button ng-click="addToCart(item)" class="btn btn-primary">+</button>
+
+							</td>
 						<tr>
 					</tbody>
 				</table>

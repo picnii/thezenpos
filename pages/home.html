@@ -1,34 +1,41 @@
 <div class="scrollable">
 	<div class="scrollable-content">
-		<section>
-			<h2>Daily Sales Report</h2>
-			<div style="text-align:center;">
-				<canvas id="daily-sales-chart" width="480" height="240" ></canvas>
+
+		<section style="text-align:center">
+			<h2>Product</h2>
+			<div class="row">
+				<div class="col-xs-8">
+					<div style="text-align:center;">
+						<canvas id="sales-chart" width="240" height="240" ></canvas>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div style="text-align:center;">
+						<h3>{{items.length}} Items</h3>
+						<h3>{{types.length}} Types</h3>
+					</div>
+				</div>
 			</div>
 		</section>
-		<section>
+
+		<section style="text-align:center">
 			<h2>Stock</h2>
-			<table class="table">
-				<thead>
-				<tr>
-					<th class="col-lg-2">สินค้า</th>
-					<th class="col-lg-6"></th>
-					<th class="col-lg-2">จำนวน</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="item in stocks | orderBy:initStock">
-					<td>{{item.name}}</td>
-					<td><div class="progress">
-					  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="{{item.initStock}}" style="width: {{item.currentStock / item.initStock * 100 | number }}%;">
-					    {{item.currentStock / item.initStock * 100 | number }}%
-					  </div>
-					</div></td>
-					<td>{{item.currentStock }} / {{item.initStock}} </td>
-				</tr>
-			</tbody>
-			</table>
+			<div style="text-align:center;">
+				<canvas id="stock-chart" width="480" height="240" ></canvas>
+			</div>
+			<div style="display:inline-block;padding-right:5px;" ng-repeat="stock in stocks">
+				<div style="background:{{stock.color}};height:25px;width:25px;display:inline-block;"></div> {{stock.name}}<strong>({{stock.value}}) </strong>
+			</div>
 		</section>
+		
+		<section style="text-align:center">
+			<h2>Space Usage</h2>
+			<div style="text-align:center;">
+				<canvas id="space-chart" width="480" height="240" ></canvas>
+			</div>
+			<div style="background:#F38630;height:25px;width:25px;display:inline-block;"></div> Used <div style="background:#69D2E7;height:25px;width:25px;display:inline-block;"></div> Empty 
+		</section>
+		
 		<!--<section>
 			<h2>Recent Order</h2>
 			<table class="table">

@@ -47,9 +47,15 @@ app.config(function($routeProvider) {
       }).when('/stock/clear', { 
          templateUrl: 'pages/clearstock.html',
          controller: 'ClearStockCtrl'
-      }).when('/print', { 
-         templateUrl: 'pages/print.html',
-         controller: 'PrintCtrl'
+      }).when('/bill', { 
+         templateUrl: 'pages/bills.html',
+         controller: 'BillCtrl'
+      }).when('/bill/:id', { 
+         templateUrl: 'pages/bill-print.html',
+         controller: 'BillPrintCtrl'
+      }).when('/report', { 
+         templateUrl: 'pages/report.html',
+         controller: 'ReportCtrl'
       })      ;
       // ...
   });

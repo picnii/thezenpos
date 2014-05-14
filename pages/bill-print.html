@@ -1,0 +1,107 @@
+<section class="bill-app">
+	<div class="hidden-print">
+		
+		<section ng-show="isEdit">
+			<input type="checkbox" ng-model="isShowTax">show tax <input type="checkbox" ng-model="bill.isShowLogo">show logo
+			<input type="checkbox" ng-model="bill.isShowSign">show sign
+		</section>
+	</div>
+	<div class="row">
+		<div class="col-xs-8">
+			<div >
+				<section style="float:left;">
+					<img ng-show="bill.isShowLogo" ng-src="{{bill.logo}}">
+				</section>
+				<section  style="float:left;">
+					<strong><u>ที่อยู่</u></strong>
+					<p>{{bill.address}}</p>
+				</section>
+				<section style="clear:both;"></section>
+			</div>
+			<div ng-show="isEdit">
+				<label>Logo </label><input type="text" ng-model="bill.logo"><br/>
+				<label>Address</label><br/>
+				<textarea ng-model="bill.address"></textarea>
+			</div>
+		</div>
+		<div class="col-xs-4">
+			<div class="right">
+				เลขที่ {{bill.id}}
+				<p>{{bill.current_time | date :'longDate' }}</p>
+			</div>
+		</div>
+	</div>
+	<div style="height:50px;"></div>
+	<div class="center">
+		<h2>ใบเสร็จรับเงิน</h2>
+		<h3>RECEIPT</h3>
+	</div>
+	<div class="items">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>รายการ</th>
+					<th>ราคาต่อหน่วย</th>
+					<th>จำนวน</th>
+					<th>จำนวนเงิน</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in bill.carts">
+						<td>{{item.name}}</td>
+						<td>{{item.price}}</td>
+						<td> x {{item.count}}</td>
+						<td>{{item.price * item.count | number | new_currency}}</td>
+				<tr>
+				<tr>
+					<td colspan="3">รวม</td>
+					<td >{{bill.sum | number | new_currency}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div ng-show="bill.isShowSign" class="row fix-btm">
+
+		<div class="col-xs-6">
+			วันที่____________________
+		</div>
+		<div class="col-xs-6">
+			<br/>
+			<br/>
+			<br/>
+			<div class='center'>
+				({{bill.signBy}})<br/>
+				ผู้รับเงิน
+				<div ng-show="isEdit">
+					<input type="text" ng-model="bill.signBy">
+				</div>
+			</div>
+		</div>
+
+	</div>
+</section>
+<style type="text/css">
+	section.bill-app
+	{
+		position: relative;
+		height: 100%;
+	}
+	div.app
+	{
+		background: white;
+	}
+	div.center
+	{
+		text-align: center;;
+	}
+	div.right
+	{
+		text-align: right;;
+	}
+	div.fix-btm
+	{
+		position: absolute;
+		bottom: 0px;
+		width: 100%;
+	}
+</style>
