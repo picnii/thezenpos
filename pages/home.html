@@ -5,14 +5,14 @@
 			<h2>Product</h2>
 			<div class="row">
 				<div class="col-xs-8">
-					<div style="text-align:center;">
+					<div class="graph" style="text-align:center;max-width:240px;">
 						<canvas id="sales-chart" width="240" height="240" ></canvas>
 					</div>
 				</div>
 				<div class="col-xs-4">
 					<div style="text-align:center;">
-						<h3>{{items.length}} Items</h3>
-						<h3>{{types.length}} Types</h3>
+						<span class="test">{{items.length}} Items</span>
+						<span class="test">{{types.length}} Types</span>
 					</div>
 				</div>
 			</div>
@@ -20,7 +20,7 @@
 
 		<section style="text-align:center">
 			<h2>Stock</h2>
-			<div style="text-align:center;">
+			<div class="graph" style="text-align:center;max-width:480px;">
 				<canvas id="stock-chart" width="480" height="240" ></canvas>
 			</div>
 			<div style="display:inline-block;padding-right:5px;" ng-repeat="stock in stocks">
@@ -30,7 +30,7 @@
 		
 		<section style="text-align:center">
 			<h2>Space Usage</h2>
-			<div style="text-align:center;">
+			<div class="graph" style="text-align:center;max-width:480px;">
 				<canvas id="space-chart" width="480" height="240" ></canvas>
 			</div>
 			<div style="background:#F38630;height:25px;width:25px;display:inline-block;"></div> Used <div style="background:#69D2E7;height:25px;width:25px;display:inline-block;"></div> Empty 
@@ -45,3 +45,21 @@
 		</section>-->
 	</div>
 </div>
+<style type="text/css">
+
+
+
+span.test
+{
+	font-size:18px;
+}
+@media (max-width: 400px) { 
+	span.test
+	{
+		font-size:12px;
+		color:black;
+		font-weight: 999;
+	}
+ }
+
+</style>

@@ -2,7 +2,9 @@
 <section class="scrollable-content">
 	<div style="text-align:center;">
 		<h4>Sales Report</h4>
-		<canvas id="overall-chart" width="480" height="240" ></canvas>
+		<div class="graph" style="text-align:center;max-width:480px;">
+			<canvas id="overall-chart" width="480" height="240" ></canvas>
+		</div>
 		<span style="border:1px solid rgba(151,187,205,1);display:inline-block;background:rgba(151,187,205,0.5);width:20px;height:20px"></span>Sales 
 
 	</div>
@@ -30,12 +32,13 @@
 			</tbody>
 		</table>
 	</div>
-	<div class="btm-space">
-	</div>
-	<div class="btm-btn" >
-		<button onclick="importXLS()" class="btn btn-primary form-control"><i class="fa fa-download"></i> Download .XLS</button>
+	<div class="btm-space hidden-sm hidden-xs">
 	</div>
 </section>
+
+	<div class="btm-btn hidden-sm hidden-xs" >
+		<button onclick="importXLS()" class="btn btn-primary form-control"><i class="fa fa-download"></i> Download .XLS</button>
+	</div>
 </div>
 <style type="text/css">
 

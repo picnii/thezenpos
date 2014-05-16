@@ -283,6 +283,11 @@ function InitCtrl($rootScope, $location, $timeout, Item)
 		localStorage['BizBill'] = JSON.stringify($rootScope.bills);
 	}
 
+	$rootScope.device = {};
+	$rootScope.device.name = navigator.userAgent;
+	$rootScope.device.isMobile =  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+
 }
 
 app.run(InitCtrl)
@@ -303,6 +308,7 @@ function HomeCtrl ($scope, $rootScope, $filter) {
 		}			
 	]
 	var ctx = document.getElementById("space-chart").getContext("2d");
+	
 	var spaceChart = new Chart(ctx).Pie(data);
 
 	//find stock piechart
@@ -339,6 +345,7 @@ function HomeCtrl ($scope, $rootScope, $filter) {
 	}
 	$scope.types = types;
 	var ctx = document.getElementById("stock-chart").getContext("2d");
+	
 	$scope.stockChart = new Chart(ctx).Pie($scope.stocks);
 	
 
@@ -389,6 +396,7 @@ function HomeCtrl ($scope, $rootScope, $filter) {
 	var ctx = document.getElementById("sales-chart").getContext("2d");
 	console.log(ctx)
 	console.log({labels:sales_label, datasets:sales_set_data})
+	
 	$scope.sales_chart = new Chart(ctx).Bar({labels:sales_label, datasets:sales_set_data}, {scaleOverlay : true});
 
 }
@@ -908,7 +916,8 @@ function BillPrintCtrl($scope, $rootScope, $routeParams, $location, $timeout)
 		$scope.bill.sum +=  $scope.bill.carts[i].price * $scope.bill.carts[i].count
 	$scope.bill.logo = "http://placehold.it/150x50";
 	$scope.bill.address = "1010 สุทธิสาร ดินแดง ดินแดง กรุงเทพ 10400";
-	$scope.bill.isShowSign = true;
+	if(!$scope.device.isMobile)
+		$scope.bill.isShowSign = true;
 	$scope.bill.signBy = "สมภพ กุละปาลานนท์";
 
 }
