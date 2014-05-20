@@ -18,40 +18,40 @@ app.config(function($routeProvider) {
          templateUrl: 'pages/login.html',
          controller: 'LoginCtrl'
       }).when('/order', { 
-         templateUrl: 'pages/order.html',
+         templateUrl: 'pages/order/index.html',
          controller: 'OrderCtrl'
       }).when('/order/confirm', { 
-         templateUrl: 'pages/order-confirm.html',
+         templateUrl: 'pages/order/confirm.html',
          controller: 'OrderConfirmCtrl'
       }).when('/order/payment', { 
-         templateUrl: 'pages/order-payment.html',
+         templateUrl: 'pages/order/payment.html',
          controller: 'OrderPaymentCtrl'
       }).when('/order/type/:name', { 
-         templateUrl: 'pages/order-item.html',
+         templateUrl: 'pages/order/item.html',
          controller: 'OrderItemCtrl'
       }).when('/customer', { 
          templateUrl: 'pages/customer.html',
          controller: 'CustomerCtrl'
       }).when('/products', { 
-         templateUrl: 'pages/products.html',
+         templateUrl: 'pages/product/index.html',
          controller: 'ProductCtrl'
       }).when('/register', { 
          templateUrl: 'pages/register.html',
          controller: 'RegisterCtrl'
       }).when('/stock', { 
-         templateUrl: 'pages/stock.html',
+         templateUrl: 'pages/stock/index.html',
          controller: 'StockCtrl'
       }).when('/stock/import', { 
-         templateUrl: 'pages/import.html',
-         controller: 'ImportCtrl'
+         templateUrl: 'pages/stock/import.html',
+         controller: 'StockImportCtrl'
       }).when('/stock/clear', { 
-         templateUrl: 'pages/clearstock.html',
-         controller: 'ClearStockCtrl'
+         templateUrl: 'pages/stock/clear.html',
+         controller: 'StockClearCtrl'
       }).when('/bill', { 
-         templateUrl: 'pages/bills.html',
+         templateUrl: 'pages/bill/index.html',
          controller: 'BillCtrl'
       }).when('/bill/:id', { 
-         templateUrl: 'pages/bill-print.html',
+         templateUrl: 'pages/bill/print.html',
          controller: 'BillPrintCtrl'
       }).when('/report', { 
          templateUrl: 'pages/report.html',

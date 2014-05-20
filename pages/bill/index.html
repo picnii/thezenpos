@@ -18,7 +18,7 @@
 			<tbody>
 				<tr ng-repeat="bill in bills | filter:search" class="is-printed-{{bill.isPrinted}}">
 					<td>{{bill.id}}</td>
-					<td>{{bill.current_time | date:'short'}}</td>
+					<td>{{bill.create_time | date:'short'}}</td>
 					<td>{{bill.carts[0].name}}, ...</td>
 					<td>{{bill.sum}}</td>
 					<td><a class="btn btn-primary" ng-href="#/bill/{{bill.id}}">VIEW</a></td>

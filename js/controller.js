@@ -51,7 +51,6 @@ function InitCtrl($rootScope, $location, $timeout, Item)
 {
 	$rootScope.appName = "Menu"
 	$rootScope.storeName = "The Zen Pos"
-
 	//$rootScope.items = Item.query();
 	$rootScope.orders = [];
 	$rootScope.isLogin = function()
@@ -164,40 +163,8 @@ function InitCtrl($rootScope, $location, $timeout, Item)
 	if(typeof localStorage['BizProduct'] == "undefined")
 		localStorage['BizProduct'] = '';
 
-	$rootScope.loadProducts = function()
-	{
-		var biz_product = localStorage['BizProduct'];
-		if(biz_product == '')
-		{
-			$rootScope.items = [
-		{"id":1, "initStock":10, "currentStock":5, "price":15, "cost":10, "name":"แฮมมาโย", "type":"ถูก"},
-		{"id":2, "initStock":15, "currentStock":10, "price":15, "cost":10, "name":"หยองมาโย", "type":"ถูก"},
-		{"id":9, "initStock":5, "currentStock":0, "price":30, "cost":20, "name":"โฮหวีตกรอบทูน่า", "type":"Premium"}
-];
-			var new_biz_product = {};
-			new_biz_product.items = angular.copy($rootScope.items);
-			localStorage['BizProduct'] = JSON.stringify(new_biz_product);
-			return false
-		}
-		biz_product = JSON.parse(biz_product)
-		$rootScope.items = angular.copy(biz_product.items);
-		return true;
-	}
-	$rootScope.loadProducts();
+	$rootScope.items = LocalProduct.query();
 
-	$rootScope.saveProducts = function(items)
-	{
-		var biz_product = localStorage['BizProduct'];
-		if(biz_product == '')
-		{
-
-			return false;
-		}
-		biz_product = JSON.parse(biz_product)
-		biz_product.items = angular.copy(items);
-		localStorage['BizProduct'] = JSON.stringify(biz_product);
-		return true;
-	}
 
 	$rootScope.carts = [];
 	$rootScope.addToCart = function(item)
@@ -210,7 +177,7 @@ function InitCtrl($rootScope, $location, $timeout, Item)
 			$rootScope.carts.push(addedItem);
 		}else
 		{
-			var cart = $rootScope.carts.findById(item.id);
+			var cart = $rootScope.carts.find({id:item.id});
 			if(cart.count +1 <= cart.currentStock)
 				cart.count++;
 		}
@@ -220,67 +187,13 @@ function InitCtrl($rootScope, $location, $timeout, Item)
 	{
 		if(typeof count == 'undefined')
 		{
-			var index = $rootScope.carts.findIndexById(item.id);
+			var index = $rootScope.carts.findIndex({id:item.id});
 			$rootScope.carts.splice(index, 1);
 		}
 		var cart = $rootScope.carts.findById(item.id);
 		if(cart.count - 1 >= 0)
 			cart.count--;
 		
-	}
-
-	$rootScope.bills = [];
-	$rootScope.getNextBillId = function()
-	{
-		if($rootScope.bills.length == 0)
-			return 1
-		else
-			return $rootScope.bills[$rootScope.bills.length - 1].id + 1
-	}
-
-	$rootScope.addBill = function(carts)
-	{
-		var bill_obj = {};
-		bill_obj.id = $rootScope.getNextBillId();
-		bill_obj.current_time = new Date();
-		bill_obj.isPrinted = false;
-		bill_obj.carts = angular.copy(carts);
-		//remove current stock
-		for(var i =0; i < carts.length; i++)
-		{
-			var item = $rootScope.items.findById(carts[i].id);
-			item.currentStock -= carts[i].count;
-		}
-		$rootScope.bills.push(bill_obj);
-		$rootScope.carts=[];
-
-		//save to local storage
-		var str = JSON.stringify($rootScope.bills);
-		localStorage["BizBill"] = str;
-	}
-
-	$rootScope.loadBills = function()
-	{
-		if(typeof localStorage["BizBill"] == 'undefined' || localStorage["BizBill"] == '')
-			localStorage["BizBill"] = "[]";
-		$rootScope.bills = JSON.parse(localStorage['BizBill']);
-		for(var i =0; i < $rootScope.bills.length;i++)
-		{
-			var bill = $rootScope.bills[i];
-			if(typeof bill.current_time == "string")
-				bill.current_time = new Date(bill.current_time)
-		}
-	}
-	$rootScope.loadBills();
-
-	$rootScope.saveBill = function(bill)
-	{
-		for(var i =0; i < $rootScope.bills.length; i++)
-			if($rootScope.bills[i].id == bill.id)
-				$rootScope.bills[i] = bill;
-		console.log('saved bill');
-		console.log($rootScope.bills)
-		localStorage['BizBill'] = JSON.stringify($rootScope.bills);
 	}
 
 	$rootScope.device = {};
@@ -350,6 +263,15 @@ function HomeCtrl ($scope, $rootScope, $filter) {
 	
 
 	//find top 5 sales
+	LocalBill.query(function(bills){
+		$scope.bills = bills;
+		for(var i =0; i < $scope.bills.length;i++)
+		{
+			var bill = $scope.bills[i];
+			if(typeof bill.create_time == "string")
+				bill.create_time = new Date(bill.create_time)
+		}
+	})
 	$scope.sales = [];
 	for(var i =0; i < $scope.bills.length;i ++)
 	{
@@ -420,100 +342,6 @@ function LoginCtrl($scope, $location, $rootScope) {
 		$location.path('/');
 }
 
-function StockCtrl ($scope, $rootScope) {
-	// body...
-	$rootScope.menus = [{name:"Import", path:"/stock/import", icon:"fa-download"}, {name:"Clear Stock", path:"/stock/clear", icon:"fa-circle"}]
-	//{name:"Import", path:"/stock/import", icon:"fa-download"}
-}
-
-function ClearStockCtrl($scope, $rootScope, $location)
-{
-	$rootScope.menus = [{name:"Back", path:"/stock", icon:"fa-arrow-left"}]
-	for(var i = 0; i < $scope.items; i++)
-		$scope.items[i].tossed = false;
-
-	$scope.clearStock = function()
-	{
-		if(confirm('Are you sure to clear all these stock?'))
-		{
-			for(var i = 0; i < $scope.items.length; i++)
-			{
-				if($scope.items[i].tossed)
-				{
-					
-					$scope.items[i].currentStock = 0;
-					$scope.items[i].initStock = 0;
-				}else
-				{
-					$scope.items[i].initStock = $scope.items[i].currentStock 
-				}
-				$scope.items[i].tossed = false;
-			}
-			$rootScope.saveProducts($scope.items);
-			$location.path('/stock')	
-		}	
-	}
-}
-
-function ImportCtrl($scope, $rootScope, $location)
-{
-	$rootScope.menus = []
-	$scope.import_items = [];
-
-	$scope.isDuplicate = function(item)
-	{
-		for(var i =0; i < $scope.import_items.length; i++)
-			if($scope.import_items[i].product.id == item.product.id)
-				return {index:i, id:item.product.id};
-		return false;
-	}
-
-	$scope.add = function(item)
-	{
-		var new_obj = {product:item.product, count:item.count}
-		if( obj = $scope.isDuplicate(new_obj))
-		{
-			$scope.import_items[obj.index].count += new_obj.count;
-		}else
-			$scope.import_items.push(new_obj);
-		$scope.newImport = {}
-	}
-
-	$scope.delete = function(item)
-	{
-		for(var i =0; i < $scope.import_items.length; i++)
-			if($scope.import_items[i].id == item.id)
-			{
-				$scope.import_items.splice(i, 1);
-				break;
-			}
-		//	delete item.parent.next
-	}
-
-	$scope.import  = function()
-	{
-		for(var i =0; i < $scope.import_items.length;i++)
-		{
-			var import_product = $scope.import_items[i];
-
-			for(var j =0; j < $scope.items.length ;j++)
-			{
-				if($scope.items[j].id == import_product.product.id)
-				{
-					$scope.items[j].currentStock += import_product.count;
-					if($scope.items[j].currentStock >= $scope.items[j].initStock)
-						$scope.items[j].initStock = $scope.items[j].currentStock;
-					break;
-				}
-			}
-		}
-		console.log('items')
-		console.log($scope.items);
-		$rootScope.saveProducts($scope.items);
-		$location.path('/stock');
-	}
-}
-
 function RegisterCtrl($scope, $location, $rootScope)
 {
 	$rootScope.menus = [];
@@ -530,200 +358,25 @@ function RegisterCtrl($scope, $location, $rootScope)
 	}
 }
 
-function OrderConfirmCtrl($scope, $filter, $rootScope)
-{
-	
-	//$scope.carts = [{"id":2, "count":2, "initStock":15, "currentStock":10, "price":15, "cost":10, "name":"หยองมาโย", "type":"ถูก"}, {"id":3, "count":1, "initStock":20, "currentStock":18, "price":15, "cost":10, "name":"ทูหน้า", "type":"ถูก"}];
-	var sum  = 0;
-	for(var i = 0; i < $scope.carts.length;i++)
-	{
-		sum += $scope.carts[i].count * $scope.carts[i].price;
-	}
-	$scope.sum = sum;
-	sum = $filter('number')(sum);
-	sum = $filter('new_currency')(sum);
-
-
-
-	/*
-	* IF on mobile redirect back at order else redirect at bill print page
-	*/
-	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
- // some code..
- 		$rootScope.menus = [
-			{name:"Back", path:"/order", icon:"fa-arrow-left"},
-			{name:"Confirm Payment(" + sum + ")", path:"/order", icon:"fa-check-square", click:function(){
-				$scope.addBill($scope.carts);
-				$scope.saveProducts($scope.items);
-				$scope.carts = [];
-			}}
-		 ];
-	}else
-	{
-		var nextBillId = $rootScope.getNextBillId();
-		 $rootScope.menus = [
-			{name:"Back", path:"/order", icon:"fa-arrow-left"},
-			{name:"Confirm Payment(" + sum + ")", path:"/bill/"+nextBillId, icon:"fa-check-square", click:function(){
-				$scope.addBill($scope.carts);
-				$scope.saveProducts($scope.items);
-				$scope.carts = [];
-			}}
-		 ];
-	}
-	
-
-	 
-}
-
-function OrderCtrl ($scope, Customer, $filter, $rootScope) {
-	
-
-	$scope.getTypes = function()
-	{
-		var types = [];
-		for(var i = 0; i < $scope.items.length; i++)
-		{
-			if(!types.isDuplicate($scope.items[i].type))
-			{
-				types.push($scope.items[i].type);
-			}
-		}
-		return types;
-	}
-	$scope.types = [];
-	$scope.types = $scope.getTypes();
-	
-	//$scope.carts = [{"id":2, "count":2, "initStock":15, "currentStock":10, "price":15, "cost":10, "name":"หยองมาโย", "type":"ถูก"}, {"id":3, "count":1, "initStock":20, "currentStock":18, "price":15, "cost":10, "name":"ทูหน้า", "type":"ถูก"}];
-
-	$rootScope.menus = [{name:"Confirm", path:"/order/confirm", icon:"fa-check-square"}];
-}
-
-function OrderItemCtrl ($scope, $filter, $rootScope, $routeParams, $location) {
-	$rootScope.menus = [{name:"Back", path:"/order", icon:"fa-arrow-left"}]
-	var type = $routeParams.name;
-
-
-	$scope.products = $filter('filter')($scope.items, {type:type});
-
-	//for(var i =0; i < $scope.products.length; i++)
-	//	$scope.products[i].count = 0;
-
-	for(var i = 0; i < $scope.products.length ;i++)
-	{
-		$scope.products[i].count = 0;
-		$scope.products[i].add = function()
-		{
-			if(this.count + 1 <= this.currentStock)
-				this.count++;
-		}
-
-		$scope.products[i].remove = function()
-		{
-			if(this.count - 1 >= 0)
-				this.count--;
-		}
-	}
-
-	$scope.sendOrder = function()
-	{
-		for(var i = 0; i < $scope.products.length ;i++)
-		{
-			if($scope.products[i].count > 0)
-				$scope.addToCart($scope.products[i]);
-		}
-		console.log($scope.carts);
-		$location.path('/order');
-
-	}
-
-}
-
-function OrderPCCtrl ($scope, Customer, $filter, $rootScope) {
-	// body...
-	$rootScope.menus = [];
-	$scope.sum = 0;
-	$scope.carts = [];
-	for(var i =0; i < $scope.items.length; i++)
-	{
-		$scope.items[i].count = 0;
-		$scope.items[i].add = function()
-		{
-			this.count++;
-			$scope.sum += this.price;
-			if(this.count == 1)
-			{
-				this.cart_index = $scope.carts.length;
-				$scope.carts.push(this);
-
-			}else
-				$scope.carts[this.cart_index].count = this.count;
-			console.log('added at' + this.cart_index + ' count:'+ this.count)
-			console.log($scope.carts[this.cart_index])
-			console.log($scope.carts);
-				
-		}
-		$scope.items[i].remove = function()
-		{
-			if(this.count - 1 >= 0)
-			{
-				this.count--;
-				$scope.sum -= this.price;
-				$scope.carts[this.cart_index].count = this.count;
-			}
-			if(this.count == 0)
-			{
-				for(var i =0;i<$scope.carts.length; i++)
-					if($scope.carts[i].id == this.id)
-						delete $scope.carts[i];
-			}
-		}
-	}
-
-	$scope.customers = Customer.query();
-	$scope.is_selected = false;
-	$scope.selectCustomer = function()
-	{
-		$scope.is_selected = true;
-		//console.log($scope.selectedCustomer);
-	}
-
-	$scope.clearOrder = function()
-	{
-		$scope.sum = 0;
-		for(var i =0; i < $scope.items.length; i++)
-			$scope.items[i].count = 0;
-		$scope.is_selected = false;
-		delete $scope.selectedCustomer
-	}
-
-	$scope.sendOrder = function()
-	{
-		var order = {customer:$scope.selectedCustomer, sum:$scope.sum, orders:$scope.carts, status:0}
-		console.log(order);
-		$rootScope.orders.push(order);
-		$scope.clearOrder();
-	}
-
-	$scope.updateSearch = function() {
-		var products = $filter('filter')($scope.items, $scope.q);
-		console.log(products);
-		for(var i =0; i < products.length;i++)
-			products[i].add();
-	}
-
-}
-
 function ReportCtrl($scope, $rootScope)
 {
 	$rootScope.menus = [];
+	 LocalBill.query(function(bills){
+	 	$scope.bills =bills;
+		for(var i =0; i < $scope.bills.length;i++)
+		{
 
+			var bill = $scope.bills[i];
+			if(typeof bill.create_time == "string")
+				bill.create_time = new Date(bill.create_time)
+		}
+	})
 	var hour_time =[], sales =[], costs =[];
-	
-	var init_date = $scope.bills[0].current_time.getDate();
-	var init_hour = $scope.bills[0].current_time.getHours() ;
+	var init_date = $scope.bills[0].create_time.getDate();
+	var init_hour = $scope.bills[0].create_time.getHours() ;
 	var last_index = $scope.bills.length - 1;
-	var des_date =  $scope.bills[last_index].current_time.getDate();
-	var des_hour = $scope.bills[last_index].current_time.getHours() ;
+	var des_date =  $scope.bills[last_index].create_time.getDate();
+	var des_hour = $scope.bills[last_index].create_time.getHours() ;
 	console.log("start ("+ init_date + "," + init_hour + ")");
 	console.log("end (" + des_date + "," + des_hour + ")");
 	for(var d = init_date; d <= des_date; d++)
@@ -741,8 +394,8 @@ function ReportCtrl($scope, $rootScope)
 			for(var b = 0; b < $scope.bills.length;b++)
 			{
 				var bill = $scope.bills[b];
-				var correct_hour_range = bill.current_time.getHours() == h;
-				var correct_date_range = bill.current_time.getDate() == d
+				var correct_hour_range = bill.create_time.getHours() == h;
+				var correct_date_range = bill.create_time.getDate() == d
 				
 				if(correct_date_range && correct_hour_range)
 					for(var c =0; c < bill.carts.length; c++)
@@ -785,7 +438,7 @@ function ReportCtrl($scope, $rootScope)
 		for(var j =0; j < $scope.bills[i].carts.length; j++)
 		{
 			var report_obj = {};
-			report_obj.current_time = $scope.bills[i].current_time;
+			report_obj.create_time = $scope.bills[i].create_time;
 			var item = $scope.bills[i].carts[j];
 			report_obj.bill = $scope.bills[i].id;
 			report_obj.name = item.name
@@ -798,129 +451,12 @@ function ReportCtrl($scope, $rootScope)
 	console.log($scope.reports)
 }
 
-function ProductCtrl($scope, $rootScope)
-{
-	$rootScope.menus = [];
-
-	$scope.is_add_new = false;
-	$scope.setCRUDforItem = function(item)
-	{
-		item.isEdit = false;
-		item.save = function()
-		{
-			this.isEdit = false;
-			$rootScope.saveProducts($scope.items);
-		}
-		item.delete = function()
-		{
-			var index = -1;
-			for(var i =0; i < $scope.items.length ;i++)
-				if($scope.items[i].id == this.id)
-				{
-					index = i;
-					break;
-				}
-			if(confirm("Are you sure to delete this product?"))
-				$scope.items.splice(index, 1);
-			$rootScope.saveProducts($scope.items);
-		}
-		return angular.copy(item);
-	}
-
-	/*
-	* Init Zone
-	*/
-	$rootScope.loadProducts();
-	for(var i =0; i < $scope.items.length; i++)
-	{
-		$scope.items[i] = $scope.setCRUDforItem($scope.items[i]);
-	}
-
-	$scope.addItem = function(item)
-	{
-		item.id = $scope.items[$scope.items.length - 1].id + 1
-		item = $scope.setCRUDforItem(item);
-
-		$scope.items.push(item);
-		$rootScope.saveProducts($scope.items);
-		$scope.is_add_new = false;
-	}
-
-
-
-}
-
 function CustomerCtrl($scope, Customer, $rootScope)
 {
 	$rootScope.menus = [];
 	$scope.customers = Customer.query();
 }
 
-function BillCtrl($scope, $rootScope)
-{
-	$rootScope.menus = [];
-	for(var i =0; i < $scope.bills.length; i++)	
-	{
-		var price = 0;
-		for(var j=0; j< $scope.bills[i].carts.length ; j++)
-			price += $scope.bills[i].carts[j].price * $scope.bills[i].carts[j].count
-		$scope.bills[i].sum = price;
-	}
-	$scope.search={}
-	$scope.resetSearch = function()
-	{
-		$scope.search = {};
-		console.log('rest');
-		console.log($scope.search)
-	}
-}
-
-function BillPrintCtrl($scope, $rootScope, $routeParams, $location, $timeout)
-{
-	$scope.onEditBtn = function()
-	{
-		$scope.isEdit = true;
-		$rootScope.menus = [{name:"Preview", path:"/bill/"+ $routeParams.id, icon:"fa-arrow-left", click:$scope.onBackBtn}
-		
-	]
-	}
-
-	$scope.onBackBtn = function()
-	{
-		if($scope.isEdit)
-		{
-			$scope.isEdit = false;
-			$rootScope.menus = [{name:"Back", path:"/bill/"+ $routeParams.id, icon:"fa-arrow-left", click:$scope.onBackBtn},
-		{name:"Print", path:"/bill", icon:"fa-print"},
-		{name:"Edit", path:"/bill/" + $routeParams.id, icon:"fa-edit", click:$scope.onEditBtn}
-	]
-		}else
-			$timeout(function(){$location.path('/bill')}, 50)
-			
-	}
-
-	$scope.onPrintBtn = function()
-	{
-		$scope.bill.isPrinted = true;
-		$scope.saveBill($scope.bill);
-		window.print();
-	}
-
-	$rootScope.menus = [{name:"Back", path:"/bill/"+ $routeParams.id, icon:"fa-arrow-left", click:$scope.onBackBtn},
-		{name:"Print", path:"/bill", icon:"fa-print", click:$scope.onPrintBtn},
-		{name:"Edit", path:"/bill/" + $routeParams.id, icon:"fa-edit", click:$scope.onEditBtn}
-	];
-	$scope.bill = $scope.bills.findById($routeParams.id);
-	$scope.bill.sum = 0;
-	for(var i =0; i < $scope.bill.carts.length ;i++)
-		$scope.bill.sum +=  $scope.bill.carts[i].price * $scope.bill.carts[i].count
-	$scope.bill.logo = "http://placehold.it/150x50";
-	$scope.bill.address = "1010 สุทธิสาร ดินแดง ดินแดง กรุงเทพ 10400";
-	if(!$scope.device.isMobile)
-		$scope.bill.isShowSign = true;
-	$scope.bill.signBy = "สมภพ กุละปาลานนท์";
-
-}
 
 function importXLS(){
 		var dt = new Date();
