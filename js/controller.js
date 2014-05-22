@@ -303,7 +303,10 @@ function RegisterCtrl($scope, $location, $rootScope)
 		{
 			$scope.saveMember({email:$scope.email, key:$scope.password});
 			$scope.saveStore($scope.store);
-			$location.path('/')
+			$scope.authenticate($scope.email, $scope.password, function(){
+				$location.path('/')	
+			})
+			
 		}else
 		{
 			document.getElementById('noob').click();
