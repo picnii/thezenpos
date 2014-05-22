@@ -34,6 +34,15 @@ function LocalModel(storageName)
 		return this._save(model);
 	}
 
+	this.load = function()
+	{
+		var obj = JSON.parse(self.localStorage);
+		for(key in obj)
+		{
+			self[key] = obj[self];
+		}
+	}
+
 
 	this.save = function()
 	{

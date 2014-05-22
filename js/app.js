@@ -54,7 +54,7 @@ app.config(function($routeProvider) {
          templateUrl: 'pages/bill/print.html',
          controller: 'BillPrintCtrl'
       }).when('/report', { 
-         templateUrl: 'pages/report.html',
+         templateUrl: 'pages/report/index.html',
          controller: 'ReportCtrl'
       })      ;
       // ...

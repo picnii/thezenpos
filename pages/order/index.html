@@ -4,7 +4,7 @@
 			<section>
 				<h1>ประเภทสินค้า</h1>
 				<div ng-repeat = "item in types" class="menu">
-					<a ng-href="#/order/type/{{item}}">{{item}}</a>
+					<a class="order-name" ng-href="#/order/type/{{item}}">{{item}}</a>
 				</div>
 				
 			</section>
@@ -52,5 +52,13 @@
 					color:white;
 					text-align: center;
 					font-size: 20px;
+				}
+
+				a.order-name
+				{
+					width: 100px;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
 				}
 			</style>

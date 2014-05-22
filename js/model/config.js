@@ -1,3 +1,30 @@
+var LocalStore = new LocalModel('BizStore');
+var LocalUser = new LocalModel('BizUser');
+LocalUser._do_login = function(user)
+{
+	LocalUser.isLogin = true;
+	LocalUser.user = user;
+	LocalUser.save();
+}
+
+LocalUser.authenticate  = function(params, callback)
+{
+	var user  = LocalUser.get({name:params.user, password:params.password});
+	if(user !== null)
+	{
+		LocalUser._do_login(user);
+		return {id:user.id, email:user.email, status:login}
+	}
+	
+	return {status:false, message:"user not found"};
+}
+
+LocalUser.isLogin = function(callback)
+{
+	var status = {status:false, message:"not login"};
+	i
+}
+
 var LocalProduct = new LocalModel('BizProduct');
 LocalProduct.import = function(params, callback)
 {
@@ -17,11 +44,7 @@ LocalProduct.import = function(params, callback)
 			target.currentStock += import_product.count;
 			if(target.currentStock >= target.initStock)
 				target.initStock = target.currentStock;
-			
-			console.log('gonna update');
-			console.log(target);
 			var result =LocalProduct.update({id:target.id, currentStock:target.currentStock, initStock:target.initStock});
-			console.log(result)
 		}
 	}
 	if(typeof callback != "undefined")
@@ -73,7 +96,27 @@ LocalBill.addBill = function(params, callback)
 		callback(bill);
 }
 
+LocalBill.clearBills = function(callback)
+{
+	var items = [];
+	LocalBill._saveItems(items);
+	if(typeof callback != "undefined")
+		callback();
+}
+
 LocalBill.removeBill = function(params, callback)
 {
+	var bill = LocalBill.get({id:params.id});
+	for(var i =0; i < bill.carts.length ;i++)
+	{
+		var cart = bill.carts[i];
+		var item = LocalProduct.get({id:cart.id});
+		var oldCurrentStock = item.currentStock + cart.count;
+		LocalProduct.update({id:cart.id, currentStock:oldCurrentStock});
+	}
+	LocalBill.delete({id:bill.id});
 
+
+	if(typeof callback != "undefined")
+		callback();
 }

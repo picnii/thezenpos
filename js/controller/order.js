@@ -20,8 +20,7 @@ function OrderConfirmCtrl($scope, $filter, $rootScope)
 			{name:"Confirm Payment(" + sum + ")", path:"/order", icon:"fa-check-square", click:function(){
 				//$scope.addBill($scope.carts);
 				LocalBill.addBill({carts:$scope.carts})
-				$scope.saveProducts($scope.items);
-				$scope.carts = [];
+				$scope.clearCarts();
 			}}
 		 ];
 	}else
@@ -31,8 +30,7 @@ function OrderConfirmCtrl($scope, $filter, $rootScope)
 			{name:"Back", path:"/order", icon:"fa-arrow-left"},
 			{name:"Confirm Payment(" + sum + ")", path:"/bill/"+nextBillId, icon:"fa-check-square", click:function(){
 				LocalBill.addBill({carts:$scope.carts})
-				$scope.saveProducts($scope.items);
-				$scope.carts = [];
+				$scope.clearCarts();
 			}}
 		 ];
 	}

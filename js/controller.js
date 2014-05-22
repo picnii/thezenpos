@@ -1,52 +1,3 @@
-Array.prototype.isDuplicate = function(item)
-{
-	for(var i =0; i < this.length;i++)
-		if(this[i] == item)
-			return true;
-	return false;
-}
-
-Array.prototype.isDuplicateById = function(item)
-{
-	for(var i =0; i < this.length;i++)
-		if(this[i].id == item.id)
-			return true;
-	return false;
-}
-
-Array.prototype.findById = function(id)
-{
-	for(var i =0; i < this.length;i++)	
-		if(this[i].id == id)
-			return this[i];
-	return -1;
-}
-
-Array.prototype.findByName = function(id)
-{
-	for(var i =0; i < this.length;i++)	
-		if(this[i].name == name)
-			return this[i];
-	return -1;
-}
-
-Array.prototype.findIndexById = function(id)
-{
-	for(var i =0; i < this.length;i++)	
-		if(this[i].id == id)
-			return i;
-	return -1;
-}
-
-function getRandomColor() {
-    var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
-    for (var i = 0; i < 6; i++ ) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}
-
 function InitCtrl($rootScope, $location, $timeout, Item)
 {
 	$rootScope.appName = "Menu"
@@ -166,10 +117,10 @@ function InitCtrl($rootScope, $location, $timeout, Item)
 	$rootScope.items = LocalProduct.query();
 
 
-	$rootScope.carts = [];
+	
 	$rootScope.addToCart = function(item)
 	{
-		if(!$rootScope.carts.isDuplicateById(item))
+		if(!$rootScope.carts.isDuplicate(item))
 		{
 			var addedItem = angular.copy(item);
 			if(typeof addedItem.count == 'undefined' || addedItem.count <= 0 )
@@ -190,12 +141,17 @@ function InitCtrl($rootScope, $location, $timeout, Item)
 			var index = $rootScope.carts.findIndex({id:item.id});
 			$rootScope.carts.splice(index, 1);
 		}
-		var cart = $rootScope.carts.findById(item.id);
+		var cart = $rootScope.carts.find({id:item.id});
 		if(cart.count - 1 >= 0)
 			cart.count--;
 		
 	}
 
+	$rootScope.clearCarts = function()
+	{
+		$rootScope.carts = [];
+	}
+	$rootScope.clearCarts();
 	$rootScope.device = {};
 	$rootScope.device.name = navigator.userAgent;
 	$rootScope.device.isMobile =  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -233,33 +189,32 @@ function HomeCtrl ($scope, $rootScope, $filter) {
 		var stock_obj = {};
 		stock_obj.value = value;
 		stock_obj.name = name;
-		var d = index + 1;
-		var r = ( d * 52)% 256;
-		var g = ( d * 103) % 256;
-		var b = ( d * 151) % 256;
-		stock_obj.color = "rgb("+r+","+g+","+b+")"
+		var stock_color = Color.getColorByIndex(index + 1, new Color(0,0,0), new Color(52, 103, 151))
+		stock_obj.color = stock_color.getRGB();//"rgb("+r+","+g+","+b+")"
 		$scope.stocks.push(stock_obj)
 	}
 
-	for(var i =0; i < $scope.items.length; i++)
-	{
-		var current_item = $scope.items[i];
-		console.log('search')
-		console.log(types)
-		console.log(current_item)
-		if(current_item.currentStock > 0 && !types.isDuplicate(current_item.type))
+	LocalProduct.query(function(items){
+		$scope.items = items;
+		for(var i =0; i < $scope.items.length; i++)
 		{
-			$scope.addStock(current_item.type, current_item.currentStock, types.length)	
-			types.push(current_item.type)
-		}else{
-			var item = $scope.stocks.findByName(current_item.type);
-			item.value += current_item.currentStock;
+			var current_item = $scope.items[i];
+			if(current_item.currentStock > 0 && !types.isDuplicate(current_item.type))
+			{
+				$scope.addStock(current_item.type, current_item.currentStock, types.length)	
+				types.push(current_item.type)
+			}else if(types.isDuplicate(current_item.type)){
+				console.log('find stocks');
+				console.log($scope.stocks)
+				var item = $scope.stocks.find({name:current_item.type});
+				item.value += current_item.currentStock;
+			}
 		}
-	}
-	$scope.types = types;
-	var ctx = document.getElementById("stock-chart").getContext("2d");
-	
-	$scope.stockChart = new Chart(ctx).Pie($scope.stocks);
+		$scope.types = types;
+		var ctx = document.getElementById("stock-chart").getContext("2d");
+		
+		$scope.stockChart = new Chart(ctx).Pie($scope.stocks);
+	})
 	
 
 	//find top 5 sales
@@ -271,55 +226,53 @@ function HomeCtrl ($scope, $rootScope, $filter) {
 			if(typeof bill.create_time == "string")
 				bill.create_time = new Date(bill.create_time)
 		}
-	})
-	$scope.sales = [];
-	for(var i =0; i < $scope.bills.length;i ++)
-	{
-		for(var j =0; j < $scope.bills[i].carts.length;j++)
+		$scope.sales = [];
+		for(var i =0; i < $scope.bills.length;i ++)
 		{
-			var cart = $scope.bills[i].carts[j]
-			var sale = cart.price * cart.count;
-			
-			if(!$scope.sales.isDuplicateById(cart.id))
+			for(var j =0; j < $scope.bills[i].carts.length;j++)
 			{
-				cart.value = sale;
-				$scope.sales.push(cart);
-			}else
-			{
-				var index = $scope.sales.findIndexById(cart.id);
-				$scope.sales[index].value += sale;
+				var cart = $scope.bills[i].carts[j]
+				var sale = cart.price * cart.count;
+				
+				if(!$scope.sales.isDuplicate(cart))
+				{
+					cart.value = sale;
+					$scope.sales.push(cart);
+				}else
+				{
+					var index = $scope.sales.findIndex({id:cart.id});
+					$scope.sales[index].value += sale;
+				}
 			}
 		}
-	}
-	$scope.sales = $filter('orderBy')($scope.sales, 'value', true)
-	//modify sales before use
-	var sales_label =[];
-	for(var i =0; i < $scope.sales.length;i++)
-	{
-		sales_label.push($scope.sales[i].name);
-		var r = (255 + (206 * i)) % 256;
-		var g = (0 + (52 * i)) % 256;
-		var b = (0 + (73 * i)) % 256;
-		$scope.sales[i].color = "rgb("+r+","+g+","+b+")";
-	}
-	
-	var sales_set_data =[];
-	sales_set_data[0] = {
-		fillColor : "rgba(220,220,220,0.5)",
-		strokeColor : "rgba(220,220,220,1)"
-	}
-	sales_set_data[0].data = [];
-	for(var i =0; i < $scope.sales.length ; i++)
-	{
+		$scope.sales = $filter('orderBy')($scope.sales, 'value', true)
+		//modify sales before use
+		var sales_label =[];
+		for(var i =0; i < $scope.sales.length;i++)
+		{
+			sales_label.push($scope.sales[i].name);
+			var sale_color = Color.getColorByIndex(i, new Color(255,0,0), new Color(206, 52, 73))
+			$scope.sales[i].color = sale_color.getRGB();
+		}
+		var sales_set_data =[];
+		sales_set_data[0] = {
+			fillColor : "rgba(220,220,220,0.5)",
+			strokeColor : "rgba(220,220,220,1)"
+		}
+		sales_set_data[0].data = [];
+		for(var i =0; i < $scope.sales.length ; i++)
+		{
 
-		sales_set_data[0].data.push($scope.sales[i].value)
-	}
+			sales_set_data[0].data.push($scope.sales[i].value)
+		}
 
-	var ctx = document.getElementById("sales-chart").getContext("2d");
-	console.log(ctx)
-	console.log({labels:sales_label, datasets:sales_set_data})
+		var ctx = document.getElementById("sales-chart").getContext("2d");
+		console.log(ctx)
+		console.log({labels:sales_label, datasets:sales_set_data})
+		
+		$scope.sales_chart = new Chart(ctx).Bar({labels:sales_label, datasets:sales_set_data}, {scaleOverlay : true});
+	})
 	
-	$scope.sales_chart = new Chart(ctx).Bar({labels:sales_label, datasets:sales_set_data}, {scaleOverlay : true});
 
 }
 
@@ -358,98 +311,6 @@ function RegisterCtrl($scope, $location, $rootScope)
 	}
 }
 
-function ReportCtrl($scope, $rootScope)
-{
-	$rootScope.menus = [];
-	 LocalBill.query(function(bills){
-	 	$scope.bills =bills;
-		for(var i =0; i < $scope.bills.length;i++)
-		{
-
-			var bill = $scope.bills[i];
-			if(typeof bill.create_time == "string")
-				bill.create_time = new Date(bill.create_time)
-		}
-	})
-	var hour_time =[], sales =[], costs =[];
-	var init_date = $scope.bills[0].create_time.getDate();
-	var init_hour = $scope.bills[0].create_time.getHours() ;
-	var last_index = $scope.bills.length - 1;
-	var des_date =  $scope.bills[last_index].create_time.getDate();
-	var des_hour = $scope.bills[last_index].create_time.getHours() ;
-	console.log("start ("+ init_date + "," + init_hour + ")");
-	console.log("end (" + des_date + "," + des_hour + ")");
-	for(var d = init_date; d <= des_date; d++)
-	{
-		if(d == init_date)
-			var start_hour = init_hour;
-		else
-			var start_hour = 0;
-		
-		for(var h = start_hour; h <= 23; h++)
-		{
-			var sum = 0;
-			
-			//check bill that match d and h range
-			for(var b = 0; b < $scope.bills.length;b++)
-			{
-				var bill = $scope.bills[b];
-				var correct_hour_range = bill.create_time.getHours() == h;
-				var correct_date_range = bill.create_time.getDate() == d
-				
-				if(correct_date_range && correct_hour_range)
-					for(var c =0; c < bill.carts.length; c++)
-						sum += bill.carts[c].price * bill.carts[c].count
-				if(correct_date_range && correct_hour_range)
-				{
-					console.log('found it')
-					console.log(bill)
-					console.log(sum)
-				}
-			}
-			if((h == init_hour && d == init_date) || (h == des_hour && d == des_date) )
-				hour_time.push(h + ".00");
-			else
-				hour_time.push(" ")
-			//console.log('test')
-			//console.log(sum)
-			sales.push(sum);
-		
-		}
-	}
-
-	var data = {
-	labels : hour_time,
-	datasets : [
-			{
-				fillColor : "rgba(151,187,205,0.5)",
-				strokeColor : "rgba(151,187,205,1)",
-				data : sales
-			}
-		]
-	}
-	var ctx = document.getElementById("overall-chart").getContext("2d");
-	var myNewChart = new Chart(ctx).Line(data);
-
-	$scope.reports = [];
-	for(var i =0; i < $scope.bills.length; i++)
-	{
-		
-		for(var j =0; j < $scope.bills[i].carts.length; j++)
-		{
-			var report_obj = {};
-			report_obj.create_time = $scope.bills[i].create_time;
-			var item = $scope.bills[i].carts[j];
-			report_obj.bill = $scope.bills[i].id;
-			report_obj.name = item.name
-			report_obj.price = item.price;
-			report_obj.count = item.count;
-			$scope.reports.push(report_obj);
-		}
-		
-	}
-	console.log($scope.reports)
-}
 
 function CustomerCtrl($scope, Customer, $rootScope)
 {
@@ -457,28 +318,3 @@ function CustomerCtrl($scope, Customer, $rootScope)
 	$scope.customers = Customer.query();
 }
 
-
-function importXLS(){
-		var dt = new Date();
-        var day = dt.getDate();
-        var month = dt.getMonth() + 1;
-        var year = dt.getFullYear();
-        var hour = dt.getHours();
-        var mins = dt.getMinutes();
-        var postfix = day + "." + month + "." + year + "_" + hour + "." + mins;
-        //creating a temporary HTML link element (they support setting file names)
-        var a = document.createElement('a');
-        //getting data from our div that contains the HTML table
-        var data_type = 'data:application/vnd.ms-excel';
-        var table_div = document.getElementById('report-table');
-        //var table_html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body>';
-        table_html = table_div.outerHTML.replace(/ /g, '%20');
-        //table_html += '</body></html>';
-        a.href = data_type + ', ' + table_html;
-        //setting the file name
-        a.download = 'exported_table_' + postfix + '.xls';
-        //triggering the function
-        a.click();
-        //just in case, prevent default behaviour
-        
-    }

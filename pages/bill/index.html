@@ -1,8 +1,8 @@
-<section style="text-align:center;vertical-align:center">
-	<input type="radio" class="search-btn" ng-value="false" ng-model="search.isPrinted" name="search-filter"><label class="search-label">Not Printed</label>
-	<input type="radio" class="search-btn" ng-value="true" ng-model="search.isPrinted" name="search-filter"><label class="search-label">Printed</label>
-	<input type="radio" class="search-btn" ng-model="nope" ng-click="resetSearch()" name="search-filter"><label class="search-label">All</label>
-</section> 
+<section class="form">
+	<h5 class="hidden-xs">Search</h5>
+	<select ng-model="searchOption" ng-options="item.name for item in searchOptions" class="form-control" ng-change="updateSearch()" ></select>
+</section>
+
 <div class="scrollable" style="margin-top:50px;">
 	<div class="scrollable-content">
 		<table class="table table-striped">
