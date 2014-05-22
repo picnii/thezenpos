@@ -45,11 +45,17 @@ function OrderCtrl ($scope, Customer, $filter, $rootScope) {
 	$scope.getTypes = function()
 	{
 		var types = [];
+		var types_check =[];
 		for(var i = 0; i < $scope.items.length; i++)
 		{
-			if(!types.isDuplicate($scope.items[i].type))
+
+			if(!types_check.isDuplicate($scope.items[i].type))
 			{
-				types.push($scope.items[i].type);
+				var type_obj = {};
+				type_obj.name = $scope.items[i].type;
+				type_obj.color = Color.getColorByIndex(types.length, new Color(255,100,0), new Color(100,100,100)).getRGB();
+				types.push(type_obj);
+				types_check.push(type_obj.name)
 			}
 		}
 		return types;

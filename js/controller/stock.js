@@ -6,9 +6,11 @@ function StockCtrl ($scope, $rootScope) {
 	$scope.items = LocalProduct.query();
 }
 
-function StockClearCtrl($scope, $rootScope, $location, $filter)
+function StockClearCtrl($scope, $rootScope, $location, $filter, $timeout)
 {
-	$rootScope.menus = [{name:"Back", path:"/stock", icon:"fa-arrow-left"}]
+	$rootScope.menus = [{name:"Back", path:"/stock", icon:"fa-arrow-left"},{name:"Clear Stock", path:"/stock/clear", icon:"fa-circle", click:function(){
+		$timeout($scope.clearStock, 50);
+	}}]
 	$scope.items = LocalProduct.query();
 	for(var i = 0; i < $scope.items; i++)
 		$scope.items[i].tossed = false;
@@ -22,29 +24,15 @@ function StockClearCtrl($scope, $rootScope, $location, $filter)
 			LocalProduct.clearStock({items:tossed_items}, function(){
 				$location.path('/stock')	
 			})
-			/*
-			for(var i = 0; i < $scope.items.length; i++)
-			{
-				if($scope.items[i].tossed)
-				{
-					
-					$scope.items[i].currentStock = 0;
-					$scope.items[i].initStock = 0;
-				}else
-				{
-					$scope.items[i].initStock = $scope.items[i].currentStock 
-				}
-				$scope.items[i].tossed = false;
-			}
-			$rootScope.saveProducts($scope.items);
-			$location.path('/stock')	*/
 		}	
 	}
 }
 
-function StockImportCtrl($scope, $rootScope, $location)
+function StockImportCtrl($scope, $rootScope, $location, $timeout)
 {
-	$rootScope.menus = []
+	$rootScope.menus = [{name:"Import", path:"/stock/import", icon:"fa-download", click:function(){
+		$timeout($scope.import, 50);
+	}}]
 	$scope.import_items = [];
 	$scope.items = LocalProduct.query();
 	$scope.isDuplicate = function(item)
@@ -81,24 +69,6 @@ function StockImportCtrl($scope, $rootScope, $location)
 	{
 		LocalProduct.import({items:$scope.import_items}, function(){
 			$location.path('/stock');
-		})/*
-		for(var i =0; i < $scope.import_items.length;i++)
-		{
-			var import_product = $scope.import_items[i];
-
-			for(var j =0; j < $scope.items.length ;j++)
-			{
-				if($scope.items[j].id == import_product.product.id)
-				{
-					$scope.items[j].currentStock += import_product.count;
-					if($scope.items[j].currentStock >= $scope.items[j].initStock)
-						$scope.items[j].initStock = $scope.items[j].currentStock;
-					break;
-				}
-			}
-		}
-		
-		$rootScope.saveProducts($scope.items);
-		$location.path('/stock');*/
+		})
 	}
 }

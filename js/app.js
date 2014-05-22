@@ -89,3 +89,4 @@ itemServices.factory('Store', ['$resource',
       get: {method:'GET', params:{name:'store'}, isArray:false}
     });
   }]);
+

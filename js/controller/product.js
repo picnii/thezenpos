@@ -1,6 +1,24 @@
 function ProductCtrl($scope, $rootScope)
 {
-	$rootScope.menus = [];
+
+	$scope.onClickForAddNew = function()
+	{
+		$scope.is_add_new = true;
+		$rootScope.menus = [{name:"BACK", path:"/products", icon:"fa-arrow-left", click:function(){
+			$scope.is_add_new = false;
+			$rootScope.menus = [{name:"Add New", path:"/products", icon:"fa-plus", click:$scope.onClickForAddNew }, {name:"Import", path:"/stock/import", icon:"fa-download"}];
+		} }, {name:"Save", path:"/products", icon:"fa-plus", click:$scope.onClickForSave }];	
+	}
+
+	$scope.onClickForSave = function()
+	{
+		$scope.addItem($scope.newItem);
+		$scope.is_add_new = false;
+
+		$rootScope.menus = [{name:"Add New", path:"/products", icon:"fa-plus", click:$scope.onClickForAddNew },{name:"Import", path:"/stock/import", icon:"fa-download"}];
+	}
+
+	$rootScope.menus = [{name:"Add New", path:"/products", icon:"fa-plus", click:$scope.onClickForAddNew }, {name:"Import", path:"/stock/import", icon:"fa-download"}];
 	$scope.is_add_new = false;
 	$scope.setCRUDforItem = function(item)
 	{
@@ -9,7 +27,7 @@ function ProductCtrl($scope, $rootScope)
 		{
 			this.isEdit = false;
 			LocalProduct.update(this, function(){
-				$scope.items = LocalProduct.query();
+				$scope.refresh();
 			})
 		}
 		item.delete = function()
@@ -27,11 +45,15 @@ function ProductCtrl($scope, $rootScope)
 	*/
 	//$rootScope.loadProducts();
 	
-	$scope.items = LocalProduct.query();
-	for(var i =0; i < $scope.items.length; i++)
+	$scope.refresh = function()
 	{
-		$scope.items[i] = $scope.setCRUDforItem($scope.items[i]);
+		$scope.items = LocalProduct.query();
+		for(var i =0; i < $scope.items.length; i++)
+		{
+			$scope.items[i] = $scope.setCRUDforItem($scope.items[i]);
+		}
 	}
+	$scope.refresh();
 
 	$scope.addItem = function(item)
 	{

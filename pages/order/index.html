@@ -1,15 +1,15 @@
 <div class="scrollable">
 	<div class="scrollable-content container">
-		
+			
 			<section>
-				<h1>ประเภทสินค้า</h1>
+				<h1>Type of product</h1>
 				<div ng-repeat = "item in types" class="menu">
-					<a class="order-name" ng-href="#/order/type/{{item}}">{{item}}</a>
+					<a class="order-name" style="background:{{item.color}}" ng-href="#/order/type/{{item.name}}">{{item.name}}</a>
 				</div>
 				
 			</section>
 			<section>
-				<h1>จำนวนออร์เดอร์</h1>
+				<h1>Current Order</h1>
 				<table class="table">
 					<thead>
 						<tr>

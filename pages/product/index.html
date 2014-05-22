@@ -1,12 +1,13 @@
 <div class="scrollable">
 	<div class="scrollable-content">
 		<section ng-hide="is_add_new">
+			
 			<table class="table">
 			<thead>
 				<tr>
-					<th>ชื่อ</th>
-					<th>ราคา</th>
-					<th colspan="2">ประเภท</th>
+					<th>Name</th>
+					<th>Price</th>
+					<th colspan="2">Type</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -35,7 +36,7 @@
 			
 		</section>
 		<section ng-show="is_add_new">
-			<button ng-click="is_add_new = false" class="btn btn-primary">Back</button><br/>
+			<!--<button ng-click="is_add_new = false" class="btn btn-primary">Back</button><br/>-->
 			<form role="form">
 				<div class="form-group">
 					<label for="name-input">Name</label>
@@ -56,9 +57,10 @@
 		</section>
 	</div>
 </div>
-<div class="btm-btn" ng-hide="is_add_new">
+<!--<div class="btm-btn" ng-hide="is_add_new">
 	<button class="btn  btn-primary form-control" ng-click="is_add_new=true;">ADD NEW</button>
 </div>
 <div class="btm-btn" ng-show="is_add_new">
 	<button class="btn  btn-primary form-control" ng-click="addItem(newItem)">Save</button>
 </div>
+-->

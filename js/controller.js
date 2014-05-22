@@ -278,11 +278,19 @@ function HomeCtrl ($scope, $rootScope, $filter) {
 
 function ProfileCtrl ($scope, $rootScope) {
 	// body...
-	$rootScope.menus = [];
+	
+	$scope.save = function(){
+		$rootScope.store = $scope.store;
+		$rootScope.storeName = $scope.store.name;
+		$rootScope.user = $scope.user;
+		$rootScope.saveStore($scope.store)
+		$rootScope.saveMember($scope.user)
+	}
+	$rootScope.menus = [{name:"Save", path:"/profile", icon:"fa-save", click:$scope.save }];
 }
 
-function LoginCtrl($scope, $location, $rootScope) {
-	$rootScope.menus = [];
+function LoginCtrl($scope, $location, $rootScope, $timeout) {
+	
 	$scope.login = function()
 	{
 		$scope.authenticate($scope.email, $scope.password, function(){
@@ -291,13 +299,16 @@ function LoginCtrl($scope, $location, $rootScope) {
 		});
 		return false;
 	}
+	$rootScope.menus = [{name:"LOGIN", path:"/login", icon:"fa-sign-in", click:function(){
+		$timeout($scope.login, 50);
+	} }];
 	if($scope.isLogin())
 		$location.path('/');
 }
 
 function RegisterCtrl($scope, $location, $rootScope)
 {
-	$rootScope.menus = [];
+	
 	$scope.register = function(){
 		if($scope.password == $scope.re_password)
 		{
@@ -312,6 +323,9 @@ function RegisterCtrl($scope, $location, $rootScope)
 			document.getElementById('noob').click();
 		}
 	}
+	$rootScope.menus = [{name:"REGISTER", path:"/register", icon:"fa-certificate", click:function(){
+		$timeout($scope.register, 50);
+	} }];
 }
 
 
