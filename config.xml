@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+    <widget xmlns   = "http://www.w3.org/ns/widgets"
+        xmlns:gap   = "http://phonegap.com/ns/1.0"
+        id          = "com.picnii.zenpos"
+        versionCode = "1" 
+        version     = "1.0.0" >
+
+    <!-- versionCode is optional and Android only -->
+
+    <name>Zen POS</name>
+
+    <description>
+        Zen POS is simple Point of sales
+    </description>
+
+    <author href="http://npop.in.th" email="sonpop@picnii.me">
+        Sompop Kulapalanont
+    </author>
+
+</widget>
