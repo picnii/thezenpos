@@ -15,7 +15,7 @@
 					<tr ng-repeat="item in products">
 						<td><div style="text-align:center;">
 							<h4>{{item.name}}</h4>
-							{{item.currentStock}} / {{item.initStock}} 
+							<span ng-show="store.is_use_stock">{{item.currentStock}} / {{item.initStock}} </span>
 						</div></td>
 						<td class="center">{{item.count}}</td>
 						<td><button class="order btn btn-lg btn-primary" ng-click="item.add()">+</button></td>

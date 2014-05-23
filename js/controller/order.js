@@ -8,8 +8,7 @@ function OrderConfirmCtrl($scope, $filter, $rootScope)
 		sum += $scope.carts[i].count * $scope.carts[i].price;
 	}
 	$scope.sum = sum;
-	sum = $filter('number')(sum);
-	sum = $filter('new_currency')(sum);
+	sum = $filter('currency')(sum, $scope.store.currency);
 	/*
 	* IF on mobile redirect back at order else redirect at bill print page
 	*/
@@ -83,7 +82,7 @@ function OrderItemCtrl ($scope, $filter, $rootScope, $routeParams, $location) {
 		$scope.products[i].count = 0;
 		$scope.products[i].add = function()
 		{
-			if(this.count + 1 <= this.currentStock)
+			if(this.count + 1 <= this.currentStock | !$scope.store.is_use_stock)
 				this.count++;
 		}
 

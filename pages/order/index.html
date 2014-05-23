@@ -13,14 +13,14 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th>สินค้า</th>				
-							<th>จำนวน</th>
+							<th>Product</th>				
+							<th>Quantity</th>
 							<th></th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr ng-repeat="item in carts">
-							<td>{{item.name}}</td>
+							<td>{{item.name}} <span class="price">({{item.price | currency:store.currency }})</span></td>
 							
 							<td> x {{item.count}}</td>
 							<td><button ng-click="removeFromCart(item,1)" class="btn btn-danger">-</button>

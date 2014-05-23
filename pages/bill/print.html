@@ -52,11 +52,11 @@
 						<td>{{item.name}}</td>
 						<td>{{item.price}}</td>
 						<td> x {{item.count}}</td>
-						<td>{{item.price * item.count | number | new_currency}}</td>
+						<td>{{item.price * item.count | currency:store.currency}}</td>
 				<tr>
 				<tr>
 					<td colspan="3">รวม</td>
-					<td >{{bill.sum | number | new_currency}}</td>
+					<td >{{bill.sum | currency:store.currency}}</td>
 				</tr>
 			</tbody>
 		</table>

@@ -17,7 +17,7 @@
 						<input ng-show="product.isEdit" type="text" ng-model="product.name">
 					</td>
 					<td>
-						<span  ng-hide="product.isEdit">{{product.price | number}}</span>
+						<span  ng-hide="product.isEdit">{{product.price | currency:store.currency}}</span>
 						<input  ng-show="product.isEdit" type="number" ng-model="product.price">
 					</td>
 					<td>

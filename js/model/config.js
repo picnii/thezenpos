@@ -1,31 +1,79 @@
-var LocalStore = new LocalModel('BizStore');
+var LocalStore = new LocalModel('BizConfig');
 var LocalUser = new LocalModel('BizUser');
-LocalUser._do_login = function(user)
-{
-	LocalUser.isLogin = true;
-	LocalUser.user = user;
-	LocalUser.save();
-}
+var LocalBill = new LocalModel('BizBilling');
+var LocalProduct = new LocalModel('BizProduct');
 
-LocalUser.authenticate  = function(params, callback)
+LocalStore.authenticate  = function(params, callback)
 {
-	var user  = LocalUser.get({name:params.user, password:params.password});
-	if(user !== null)
+	//store always have only 1
+	var store = LocalStore.query()[0];
+	console.log('authenticate')
+	if(store.user.email == params.email && store.user.password == params.password)
 	{
-		LocalUser._do_login(user);
-		return {id:user.id, email:user.email, status:login}
+		console.log('pass')
+		store.isLogin = true;
+		LocalStore.update(store);
+		if(typeof callback != "undefined")
+		 	callback({email:store.user.email, status:true, user:store.user})
+		return {email:store.user.email, status:true, user:store.user}
 	}
-	
+	console.log('nope')
+	if(typeof callback != "undefined")
+		callback({status:false, message:"user not found"})
 	return {status:false, message:"user not found"};
 }
 
-LocalUser.isLogin = function(callback)
+LocalStore.isLogin = function(callback)
 {
-	var status = {status:false, message:"not login"};
-	i
+	var store = LocalStore.query()[0];
+	if(typeof callback != "undefined")
+		callback(store.isLogin)
+	return store.isLogin;
 }
 
-var LocalProduct = new LocalModel('BizProduct');
+LocalStore.logout = function(callback)
+{
+	var store = LocalStore.query()[0];
+	store.isLogin = false;
+	LocalStore.update(store);
+	if(typeof callback != "undefined")
+		callback();
+	return true;
+}
+
+LocalStore.load = function(callback)
+{
+	var stores = LocalStore.query();
+	if(stores.length == 0)
+	{
+		var new_store = {};
+		new_store.isNew  = true;
+		new_store.isLogin = false;
+		new_store.isEmpty = true;
+		new_store.is_use_stock = false;
+		new_store.currency = 'B'
+		new_store.user ={};
+		if(typeof callback != 'undefined')
+			callback(new_store);
+		return new_store;
+	}else{
+		if(typeof callback !='undefined')
+			callback(stores[0]);
+		return stores[0];
+	}
+}
+
+LocalStore.register = function(store, callback)
+{
+	store.isNew = false;
+	store.isLogin = true;
+	store.isEmpty = false;
+	var result = LocalStore.create(store);
+	if(typeof callback != "undefined")
+		callback(result);
+	return result;
+}
+
 LocalProduct.import = function(params, callback)
 {
 	var import_items = params.items;
@@ -76,9 +124,10 @@ LocalProduct.clearStock = function(params, callback)
 		callback();
 }
 
-var LocalBill = new LocalModel('BizBilling')
+
 LocalBill.addBill = function(params, callback)
 {
+	var store = LocalStore.load();
 	var bill_obj = {};
 	bill_obj.isPrinted = false;
 	bill_obj.carts = angular.copy(params.carts);
@@ -88,7 +137,8 @@ LocalBill.addBill = function(params, callback)
 	{
 		var item = LocalProduct.get({id:carts[i].id});
 		//$rootScope.items.findById(carts[i].id);
-		item.currentStock -= carts[i].count;
+		if(store.is_use_stock)
+			item.currentStock -= carts[i].count;
 		LocalProduct.update({id:item.id,currentStock:item.currentStock});
 	}
 	var bill = LocalBill.create(bill_obj)
@@ -106,12 +156,14 @@ LocalBill.clearBills = function(callback)
 
 LocalBill.removeBill = function(params, callback)
 {
+	var store = LocalStore.load();
 	var bill = LocalBill.get({id:params.id});
 	for(var i =0; i < bill.carts.length ;i++)
 	{
 		var cart = bill.carts[i];
 		var item = LocalProduct.get({id:cart.id});
-		var oldCurrentStock = item.currentStock + cart.count;
+		if(store.is_use_stock)
+			var oldCurrentStock = item.currentStock + cart.count;
 		LocalProduct.update({id:cart.id, currentStock:oldCurrentStock});
 	}
 	LocalBill.delete({id:bill.id});

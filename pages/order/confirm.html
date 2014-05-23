@@ -12,13 +12,13 @@
 			<tbody>
 				<tr ng-repeat="item in carts">
 					<td>{{item.name}}</td>
-					<td>{{item.price}}</td>
+					<td>{{item.price | currency:store.currency}}</td>
 					<td> x {{item.count}}</td>
-					<td>{{item.price * item.count | number | new_currency}}</td>
+					<td>{{item.price * item.count | currency:store.currency}}</td>
 				<tr>
 				<tr>
 					<td colspan="3">รวม</td>
-					<td >{{sum | number | new_currency}}</td>
+					<td >{{sum | currency:store.currency}}</td>
 				</tr>
 			</tbody>
 		</table>

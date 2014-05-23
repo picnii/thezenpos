@@ -20,7 +20,7 @@
 					<td>{{bill.id}}</td>
 					<td>{{bill.create_time | date:'short'}}</td>
 					<td>{{bill.carts[0].name}}, ...</td>
-					<td>{{bill.sum}}</td>
+					<td>{{bill.sum | currency:store.currency}}</td>
 					<td><a class="btn btn-primary" ng-href="#/bill/{{bill.id}}">VIEW</a></td>
 				</tr>
 			</tbody>

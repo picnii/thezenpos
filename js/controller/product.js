@@ -18,7 +18,9 @@ function ProductCtrl($scope, $rootScope)
 		$rootScope.menus = [{name:"Add New", path:"/products", icon:"fa-plus", click:$scope.onClickForAddNew },{name:"Import", path:"/stock/import", icon:"fa-download"}];
 	}
 
-	$rootScope.menus = [{name:"Add New", path:"/products", icon:"fa-plus", click:$scope.onClickForAddNew }, {name:"Import", path:"/stock/import", icon:"fa-download"}];
+	$rootScope.menus = [{name:"Add New", path:"/products", icon:"fa-plus", click:$scope.onClickForAddNew }];
+	if($scope.store.is_use_stock)
+		$rootScope.menus.push({name:"Import", path:"/stock/import", icon:"fa-download"});
 	$scope.is_add_new = false;
 	$scope.setCRUDforItem = function(item)
 	{
