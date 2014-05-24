@@ -53,12 +53,16 @@ Array.prototype.findIndex = function(filter)
 				return i;
 		}
 	}
+
 	return null;
 }
 
 Array.prototype.find = function(filter)
 {
-	return this[this.findIndex(filter)];
+	var result = this[this.findIndex(filter)];
+	if(typeof result != "undefined")
+		return result;
+	return null;
 }
 
 function getRandomColor() {

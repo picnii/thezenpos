@@ -42,7 +42,10 @@ function InitCtrl($rootScope, $location, $timeout, Item)
 
 	$rootScope.checkLogin = function()
 	{
+		console.log('check login before');
 		return  LocalStore.isLogin(function(status){
+			console.log('check login')
+			console.log(status)
 			$rootScope.is_user_login = status;
 			if(!$rootScope.is_user_login)
 				$location.path('/login');
@@ -90,15 +93,17 @@ function InitCtrl($rootScope, $location, $timeout, Item)
 	$rootScope.device.isMobile =  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 	$rootScope.store = LocalStore.load(function(store){
 		$rootScope.user = store.user;
-		console.log(store)
+		
 		if(store.isEmpty)
 			$location.path('/register')
 		else
 		{
+			
 			$rootScope.storeName = store.name;
 			$rootScope.checkLogin();
 		}
 	});
+	console.log('InitCtrl')
 }
 
 app.run(InitCtrl)

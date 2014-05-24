@@ -1,4 +1,4 @@
-describe('utilCtrl', function(){
+describe('util.js', function(){
 
    it('should be able to findItemBy find() and other attribute', function(){
 	   	var peoples = [

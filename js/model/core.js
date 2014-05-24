@@ -36,10 +36,10 @@ function LocalModel(storageName)
 
 	this.load = function()
 	{
-		var obj = JSON.parse(self.localStorage);
+		var obj = JSON.parse(localStorage[self.localStorageName]);
 		for(key in obj)
 		{
-			self[key] = obj[self];
+			self[key] = obj[key];
 		}
 	}
 
@@ -51,14 +51,16 @@ function LocalModel(storageName)
 
 	this.query = function(callback)
 	{
-		if(self.localStorage == '')
+		if(localStorage[self.localStorageName] == '')
 		{
+			self.items = [];
 			self.save();
+			return [];
 		}
 		
 
-		if(typeof self.localStorage == "string")
-			self.localStorage = JSON.parse(self.localStorage)
+		if(typeof localStorage[self.localStorageName] == "string" )
+			self.localStorage = JSON.parse(localStorage[self.localStorageName])
 		self.items = angular.copy(self.localStorage.items);
 		if(typeof callback != 'undefined')
 			callback(self.items);
@@ -68,7 +70,7 @@ function LocalModel(storageName)
 	this.get = function(params, callback)
 	{
 		var items = self.query();
-		var target = items.find({id:params.id})
+		var target = items.find(params)
 		if(typeof callback != "undefined")
 			callback(target);
 		return target;

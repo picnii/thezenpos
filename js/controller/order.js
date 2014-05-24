@@ -59,6 +59,20 @@ function OrderCtrl ($scope, Customer, $filter, $rootScope) {
 		}
 		return types;
 	}
+
+	$scope.onSelect = function($item, $model, $label)
+	{
+		$item.count = 1;
+		$rootScope.addToCart($item);
+		$scope.item_name = "";
+	}
+
+	$scope.openSearch = function(){
+		$scope.is_search_mode = true;
+		setTimeout(function() {document.getElementById('search-item-name').focus();}, 10);
+		
+	}
+
 	$scope.types = [];
 	$scope.types = $scope.getTypes();
 	

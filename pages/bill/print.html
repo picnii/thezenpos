@@ -2,7 +2,7 @@
 	<div class="hidden-print">
 		
 		<section ng-show="isEdit">
-			<input type="checkbox" ng-model="isShowTax">show tax <input type="checkbox" ng-model="bill.isShowLogo">show logo
+			<input type="checkbox" ng-model="isShowTax">show tax 
 			<input type="checkbox" ng-model="bill.isShowSign">show sign
 			
 		</section>
@@ -14,37 +14,33 @@
 					<img ng-show="bill.isShowLogo" ng-src="{{bill.logo}}">
 				</section>
 				<section  style="float:left;">
-					<strong><u>ที่อยู่</u></strong>
-					<p>{{bill.address}}</p>
+					<strong><u>Address</u></strong>
+					<p>{{store.address}}</p>
 				</section>
 				<section style="clear:both;"></section>
 			</div>
-			<div ng-show="isEdit">
-				<label>Logo </label><input type="text" ng-model="bill.logo"><br/>
-				<label>Address</label><br/>
-				<textarea ng-model="bill.address"></textarea>
-			</div>
+			
 		</div>
 		<div class="col-xs-4">
 			<div class="right">
-				เลขที่ {{bill.id}}
+				Bill no. {{bill.id}}
 				<p>{{bill.create_time | date :'longDate' }}</p>
 			</div>
 		</div>
 	</div>
 	<div style="height:50px;"></div>
 	<div class="center">
-		<h2>ใบเสร็จรับเงิน</h2>
-		<h3>RECEIPT</h3>
+		<h2>RECEIPT</h2>
+		
 	</div>
 	<div class="items">
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>รายการ</th>
-					<th>ราคาต่อหน่วย</th>
-					<th>จำนวน</th>
-					<th>จำนวนเงิน</th>
+					<th>Product</th>
+					<th>Price per unit</th>
+					<th>Quantity</th>
+					<th>Amount</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -53,10 +49,14 @@
 						<td>{{item.price}}</td>
 						<td> x {{item.count}}</td>
 						<td>{{item.price * item.count | currency:store.currency}}</td>
+				</tr>
+				<tr ng-show="isShowTax">
+					<td colspan="3">Tax ({{store.tax}}%)</td>
+					<td>{{bill.sum * store.tax /100 | currency:store.currency}}</td>
+				</tr>
 				<tr>
-				<tr>
-					<td colspan="3">รวม</td>
-					<td >{{bill.sum | currency:store.currency}}</td>
+					<td colspan="3">Total</td>
+					<td >{{bill.sum + (bill.sum * store.tax /100)*isShowTax | currency:store.currency}}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -64,18 +64,16 @@
 	<div ng-show="bill.isShowSign" class="row fix-btm">
 
 		<div class="col-xs-6">
-			วันที่____________________
+			Date ____________________
 		</div>
 		<div class="col-xs-6">
 			<br/>
 			<br/>
 			<br/>
 			<div class='center'>
-				({{bill.signBy}})<br/>
-				ผู้รับเงิน
-				<div ng-show="isEdit">
-					<input type="text" ng-model="bill.signBy">
-				</div>
+				({{store.receiver}})<br/>
+				{{store.receiver_position}}
+				
 			</div>
 		</div>
 

@@ -1,12 +1,15 @@
 <div class="scrollable">
 	<div class="scrollable-content container">
-			
-			<section>
-				<h1>Type of product</h1>
+			<section ng-show="is_search_mode">
+				<h1><a  ng-click="is_search_mode=false"  href=""><i class="fa fa-arrow-left"></i></a> Search for product</h1>
+				<input id="search-item-name" type="text" ng-model="item_name" typeahead="item.name for item in items | filter:$viewValue" class="form-control" placeholder="search for product's name, type, price" typeahead-on-select="onSelect($item, $model, $label)">
+			</section>
+			<section ng-hide="is_search_mode">
+				<h1>Select product by type</h1>
 				<div ng-repeat = "item in types" class="menu">
 					<a class="order-name" style="background:{{item.color}}" ng-href="#/order/type/{{item.name}}">{{item.name}}</a>
 				</div>
-				
+				<div class="menu"><a class="order-name search" ng-click="openSearch()" ng-hide="is_search_mode" style="background:#333" href="">Search<br/><i class="fa fa-search"></i></a></div>
 			</section>
 			<section>
 				<h1>Current Order</h1>
@@ -54,11 +57,21 @@
 					font-size: 20px;
 				}
 
-				a.order-name
+				a.order-name, button.order-name
 				{
 					width: 100px;
 					white-space: nowrap;
 					overflow: hidden;
 					text-overflow: ellipsis;
+					vertical-align: middle;
+					height: 100%;
+				}
+
+				a.order-name.search i
+				{
+					font-size: 50px;
+					
+					
+					
 				}
 			</style>

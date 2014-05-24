@@ -1,0 +1,63 @@
+table.biz > tbody > tr > td
+  {
+    vertical-align: middle;
+  }
+  table.biz > tbody > tr > td.right
+  {
+    text-align: right;
+  }
+
+
+  table.biz > tbody > tr > td.center, th.center, td.center
+  {
+    text-align: center;
+  }
+
+  .app-content
+  {
+    background: white;
+  }
+
+  .btm-btn
+  {
+    position: absolute;;
+    right: 0;
+    left: 0px;
+    z-index: 1000;
+    width: 100%;
+    top:auto;
+    bottom: 0px;
+  }
+
+  .btm-space
+  {
+    height: 34px;
+  }
+
+  button.order.btn
+  {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 80px;
+  }
+  .graph
+  {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  }
+
+  .graph canvas
+  {
+  width: 100% !important;
+  height: auto !important;
+  }
+  @media (max-width: 767px) {
+      .hidden-xs { display: none !important; }
+      .hidden-sm { display: none !important; }
+  }
+  
+  @media(min-width: 768px){
+    .hidden-md { display: none !important; }
+    .hidden-lg { display: none !important; }
+  }

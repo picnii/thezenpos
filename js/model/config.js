@@ -7,17 +7,16 @@ LocalStore.authenticate  = function(params, callback)
 {
 	//store always have only 1
 	var store = LocalStore.query()[0];
-	console.log('authenticate')
 	if(store.user.email == params.email && store.user.password == params.password)
 	{
-		console.log('pass')
+		
 		store.isLogin = true;
 		LocalStore.update(store);
 		if(typeof callback != "undefined")
 		 	callback({email:store.user.email, status:true, user:store.user})
 		return {email:store.user.email, status:true, user:store.user}
 	}
-	console.log('nope')
+	
 	if(typeof callback != "undefined")
 		callback({status:false, message:"user not found"})
 	return {status:false, message:"user not found"};
@@ -44,6 +43,7 @@ LocalStore.logout = function(callback)
 LocalStore.load = function(callback)
 {
 	var stores = LocalStore.query();
+	
 	if(stores.length == 0)
 	{
 		var new_store = {};
@@ -57,7 +57,7 @@ LocalStore.load = function(callback)
 			callback(new_store);
 		return new_store;
 	}else{
-		if(typeof callback !='undefined')
+		if(typeof callback != 'undefined')
 			callback(stores[0]);
 		return stores[0];
 	}

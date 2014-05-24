@@ -3,10 +3,10 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>สินค้า</th>
-					<th>ราคาต่อหน่วย</th>
-					<th>จำนวน</th>
-					<th>ราคารวม</th>
+					<th>Product</th>
+					<th>Price per unit</th>
+					<th>Quantity</th>
+					<th>Amount</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -17,7 +17,7 @@
 					<td>{{item.price * item.count | currency:store.currency}}</td>
 				<tr>
 				<tr>
-					<td colspan="3">รวม</td>
+					<td colspan="3">Total</td>
 					<td >{{sum | currency:store.currency}}</td>
 				</tr>
 			</tbody>
