@@ -55,7 +55,7 @@ function InitCtrl($rootScope, $location, $timeout, Item)
 
 	$rootScope.addToCart = function(item)
 	{
-		if(!$rootScope.carts.isDuplicate(item))
+		if(!$rootScope.carts.isDuplicate(item, ['id']))
 		{
 			var addedItem = angular.copy(item);
 			if(typeof addedItem.count == 'undefined' || addedItem.count <= 0 )

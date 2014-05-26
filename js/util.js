@@ -1,4 +1,4 @@
-Array.prototype.isDuplicate = function(item)
+Array.prototype.isDuplicate = function(item, options)
 {
 	
 	if(typeof item != "object")
@@ -11,9 +11,15 @@ Array.prototype.isDuplicate = function(item)
 	{
 		
 		//assume it's a array
+		
+
 		var params = [];
-		for(var key in item)
-			params.push(key);
+		if(typeof options == 'undefined')
+			for(var key in item)
+				params.push(key);
+		else
+			for(var i =0; i < options.length ; i++)
+				params.push(options[i]);
 		
 		for(var i =0; i < this.length;i++)
 		{
@@ -24,7 +30,9 @@ Array.prototype.isDuplicate = function(item)
 				if(this[i][key] == item[key])
 					count++;
 			}
-
+			console.log('check');
+			console.log(this[i]);
+			console.log(params);
 			if(count == params.length && params.length > 0)
 				return true;
 		}

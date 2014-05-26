@@ -112,7 +112,7 @@ function OrderItemCtrl ($scope, $filter, $rootScope, $routeParams, $location) {
 		for(var i = 0; i < $scope.products.length ;i++)
 		{
 			if($scope.products[i].count > 0)
-				$scope.addToCart($scope.products[i]);
+				$scope.addToCart($scope.products[i], ['id']);
 		}
 		console.log($scope.carts);
 		$location.path('/order');
