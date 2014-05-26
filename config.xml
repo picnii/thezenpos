@@ -16,5 +16,5 @@
     <author href="http://npop.in.th" email="sonpop@picnii.me">
         Sompop Kulapalanont
     </author>
-    <gap:plugin name="com.phonegap.plugins.emailcomposer" version="1.3" />
+    
 </widget>
