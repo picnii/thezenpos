@@ -51,7 +51,7 @@ function LocalModel(storageName)
 
 	this.query = function(callback)
 	{
-		if(localStorage[self.localStorageName] == '')
+		if(typeof localStorage[self.localStorageName] == 'undefined' || localStorage[self.localStorageName] == '')
 		{
 			self.items = [];
 			self.save();
@@ -111,7 +111,7 @@ function LocalModel(storageName)
 	this.get_next_id = function()
 	{
 		var items = self.query();
-		if(items.length == 0)
+		if(typeof items == 'undefined' || items.length == 0)
 			return 1;
 		var id = items[items.length - 1].id + 1;
 		return id;

@@ -44,7 +44,7 @@ LocalStore.load = function(callback)
 {
 	var stores = LocalStore.query();
 	
-	if(stores.length == 0)
+	if(typeof stores == 'undefined' || stores.length == 0)
 	{
 		var new_store = {};
 		new_store.isNew  = true;
