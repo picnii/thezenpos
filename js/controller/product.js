@@ -70,11 +70,14 @@ function ProductCtrl($scope, $rootScope)
 	}
 }
 
-function ProductCreateCtrl($scope, $rootScope, $location)
+function ProductCreateCtrl($scope, $rootScope, $location, $timeout)
 {
 	$scope.onClickForSave = function()
 	{
-		$scope.addItem($scope.newItem);
+		$timeout(function(){
+			$scope.addItem($scope.newItem);
+		}, 50)
+		
 	}
 
 	$rootScope.menus = [{name:"BACK", path:"/products", icon:"fa-arrow-left" }, {name:"Save", path:"/products/create", icon:"fa-plus", click:$scope.onClickForSave }];	
@@ -90,24 +93,29 @@ function ProductCreateCtrl($scope, $rootScope, $location)
 
 	$scope.takePhoto = function()
 	{
+		
 		navigator.camera.getPicture(function(){
-			$scope.$apply($scope.successPhoto)
-		}, function(){
-			$scope.$apply($scope.failPhoto)
-		}, { quality: 75,
-    	destinationType: Camera.DestinationType.FILE_URI });
+				$scope.$apply($scope.successPhoto)
+			}, function(){
+				$scope.$apply($scope.failPhoto)
+			}, { quality: 40,
+	    	destinationType: Camera.DestinationType.DATA_URL });
 	}
-
-	newItem.img_src = ""
-	newItem.have_photo = false;
+	$scope.newItem = {};
+	$scope.newItem.img_src = ""
+	$scope.newItem.have_photo = false;
 	$scope.successPhoto = function(imageURI)
 	{
-		newItem.img_src = imageURI;
+		newItem.img_src = "data:image/jpeg;base64," + imageURI;
 		newItem.have_photo = true;
 	}
 
 	$scope.failPhoto = function(message)
 	{
-		alert('Failed because: ' + message);
+		setTimeout(function() {
+		    // do your thing here!
+		    alert('Failed because: ' + message);
+		}, 0);
+		
 	}
 }

@@ -108,6 +108,10 @@ function InitCtrl($rootScope, $location, $timeout, Item)
 
 app.run(InitCtrl)
 
+function TestCtrl($scope)
+{
+	
+}
 
 function CustomerCtrl($scope, Customer, $rootScope)
 {

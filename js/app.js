@@ -60,6 +60,9 @@ app.config(function($routeProvider) {
       }).when('/report', { 
          templateUrl: 'pages/report/index.html',
          controller: 'ReportCtrl'
+      }).when('/test', { 
+         templateUrl: 'pages/test.html',
+         controller: 'TestCtrl'
       })      ;
       // ...
   });
