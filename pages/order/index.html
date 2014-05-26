@@ -9,7 +9,9 @@
 				<div ng-repeat = "item in types" class="menu">
 					<a class="order-name" style="background:{{item.color}}" ng-href="#/order/type/{{item.name}}">{{item.name}}</a>
 				</div>
-				<div class="menu"><a class="order-name search" ng-click="openSearch()" ng-hide="is_search_mode" style="background:#333" href="">Search<br/><i class="fa fa-search"></i></a></div>
+				<div class="menu">
+					<a class="order-name search" ng-click="openSearch()" ng-hide="is_search_mode" style="background:#333" href=""><i class="fa fa-search"></i></a>
+				</div>
 			</section>
 			<section>
 				<h1>Current Order</h1>
