@@ -1,0 +1,28 @@
+<div class="scrollable">
+	<div class="scrollable-content">
+		<form role="form">
+				<div class="form-group">
+					<label for="name-input">Name</label>
+					<input ng-model="newItem.name" id="name-input" class="form-control" type="text" placeholder="Name">
+				</div>
+				<div class="form-group">
+					<label for="price-input">Price</label>
+					<input ng-model="newItem.price" id="price-input" class="form-control" type="number" placeholder="Price">
+				</div>
+				<div class="form-group">
+					<label for="type-input">Type</label>
+					<input ng-model="newItem.type" id="type-input" class="form-control" type="text" placeholder="Type">
+				</div>
+				<div class="form-group">
+					<label for="type-input">Photo</label>
+					<div ng-show="have_photo">
+						<img ng-src="newItem.img_src">
+					</div>
+					<div ng-hide="have_photo">
+						<button class="form-control btn btn-lg" ng-click="takePhoto()">TAKE PHOTO</button>
+					</div>
+				</div>
+				
+			</form>
+	</div>		
+</div>

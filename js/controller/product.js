@@ -17,10 +17,10 @@ function ProductCtrl($scope, $rootScope)
 
 		$rootScope.menus = [{name:"Add New", path:"/products", icon:"fa-plus", click:$scope.onClickForAddNew }];
 		if($scope.store.is_use_stock)
-		$rootScope.menus.push({name:"Import", path:"/stock/import", icon:"fa-download"});
+			$rootScope.menus.push({name:"Import", path:"/stock/import", icon:"fa-download"});
 	}
 
-	$rootScope.menus = [{name:"Add New", path:"/products", icon:"fa-plus", click:$scope.onClickForAddNew }];
+	$rootScope.menus = [{name:"Add New", path:"/products/create", icon:"fa-plus"}];
 	if($scope.store.is_use_stock)
 		$rootScope.menus.push({name:"Import", path:"/stock/import", icon:"fa-download"});
 	$scope.is_add_new = false;
@@ -64,8 +64,50 @@ function ProductCtrl($scope, $rootScope)
 		item.initStock = 0;
 		item.currentStock =0;
 		LocalProduct.create(item, function(){
-			$scope.items = LocalProduct.query();
+			$scope.refresh();
 		});
 		$scope.is_add_new = false;
+	}
+}
+
+function ProductCreateCtrl($scope, $rootScope, $location)
+{
+	$scope.onClickForSave = function()
+	{
+		$scope.addItem($scope.newItem);
+	}
+
+	$rootScope.menus = [{name:"BACK", path:"/products", icon:"fa-arrow-left" }, {name:"Save", path:"/products/create", icon:"fa-plus", click:$scope.onClickForSave }];	
+
+	$scope.addItem = function(item)
+	{
+		item.initStock = 0;
+		item.currentStock =0;
+		LocalProduct.create(item, function(){
+			$location.path('/products');
+		});
+	}
+
+	$scope.takePhoto = function()
+	{
+		navigator.camera.getPicture(function(){
+			$scope.$apply($scope.successPhoto)
+		}, function(){
+			$scope.$apply($scope.failPhoto)
+		}, { quality: 75,
+    	destinationType: Camera.DestinationType.FILE_URI });
+	}
+
+	newItem.img_src = ""
+	newItem.have_photo = false;
+	$scope.successPhoto = function(imageURI)
+	{
+		newItem.img_src = imageURI;
+		newItem.have_photo = true;
+	}
+
+	$scope.failPhoto = function(message)
+	{
+		alert('Failed because: ' + message);
 	}
 }

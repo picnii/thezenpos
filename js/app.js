@@ -36,6 +36,9 @@ app.config(function($routeProvider) {
       }).when('/products', { 
          templateUrl: 'pages/product/index.html',
          controller: 'ProductCtrl'
+      }).when('/products/create', { 
+         templateUrl: 'pages/product/create.html',
+         controller: 'ProductCreateCtrl'
       }).when('/register', { 
          templateUrl: 'pages/register.html',
          controller: 'RegisterCtrl'
