@@ -5,7 +5,8 @@ var app = angular.module('myApp', [
   "mobile-angular-ui",
   "mobile-angular-ui.touch",
   "mobile-angular-ui.scrollable",
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'chartDirective'
 ])
 
 app.config(function($routeProvider) {

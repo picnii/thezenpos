@@ -14,9 +14,9 @@ function HomeCtrl ($scope, $rootScope, $filter) {
 			color : "#69D2E7"
 		}			
 	]
-	var ctx = document.getElementById("space-chart").getContext("2d");
 	
-	var spaceChart = new Chart(ctx).Pie(data);
+	$scope.space_data = data;
+	
 
 	//find stock piechart
 	$scope.stocks = [];
@@ -49,9 +49,9 @@ function HomeCtrl ($scope, $rootScope, $filter) {
 			}
 		}
 		$scope.types = types;
-		var ctx = document.getElementById("stock-chart").getContext("2d");
-		
-		$scope.stockChart = new Chart(ctx).Pie($scope.stocks);
+		//var ctx = document.getElementById("stock-chart").getContext("2d");
+		$scope.stocks_data = $scope.stocks
+		//$scope.stockChart = new Chart(ctx).Pie($scope.stocks);
 	})
 	
 
@@ -104,11 +104,12 @@ function HomeCtrl ($scope, $rootScope, $filter) {
 			sales_set_data[0].data.push($scope.sales[i].value)
 		}
 
-		var ctx = document.getElementById("sales-chart").getContext("2d");
-		console.log(ctx)
-		console.log({labels:sales_label, datasets:sales_set_data})
 		
-		$scope.sales_chart = new Chart(ctx).Bar({labels:sales_label, datasets:sales_set_data}, {scaleOverlay : true});
+		
+		console.log({labels:sales_label, datasets:sales_set_data})
+		$scope.sales_chart_data = {labels:sales_label, datasets:sales_set_data}, {scaleOverlay : true};
+		
+		
 	})
 	
 
