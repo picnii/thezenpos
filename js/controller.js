@@ -110,7 +110,7 @@ app.run(InitCtrl)
 
 function TestCtrl($scope)
 {
-	
+	$scope.navigator = navigator;
 }
 
 function CustomerCtrl($scope, Customer, $rootScope)

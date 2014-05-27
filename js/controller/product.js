@@ -93,7 +93,10 @@ function ProductCreateCtrl($scope, $rootScope, $location, $timeout)
 
 	$scope.takePhoto = function()
 	{
-		
+		if (!navigator.camera) {
+          alert("Camera API not supported", "Error");
+	          return;
+	      }
 		navigator.camera.getPicture(function(){
 				$scope.$apply($scope.successPhoto)
 			}, function(){
@@ -106,8 +109,8 @@ function ProductCreateCtrl($scope, $rootScope, $location, $timeout)
 	$scope.newItem.have_photo = false;
 	$scope.successPhoto = function(imageURI)
 	{
-		newItem.img_src = "data:image/jpeg;base64," + imageURI;
-		newItem.have_photo = true;
+		$scope.newItem.img_src = "data:image/jpeg;base64," + imageURI;
+		$scope.newItem.have_photo = true;
 	}
 
 	$scope.failPhoto = function(message)
