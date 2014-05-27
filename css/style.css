@@ -40,7 +40,18 @@ table.biz > tbody > tr > td
     height: auto !important;
     max-width: 80px;
   }
-  
+  .graph
+  {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  }
+
+  .graph canvas
+  {
+  width: 100% !important;
+  height: auto !important;
+  }
   @media (max-width: 767px) {
       .hidden-xs { display: none !important; }
       .hidden-sm { display: none !important; }
