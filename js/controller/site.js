@@ -118,6 +118,7 @@ function HomeCtrl ($scope, $rootScope, $filter) {
 function ProfileCtrl ($scope, $rootScope) {
 	// body...
 	$scope.store_tmp = angular.copy($scope.store);
+	console.log($scope.user)
 	$scope.save = function(){
 		$rootScope.store = $scope.store_tmp;
 		$rootScope.storeName = $scope.store.name;
@@ -177,6 +178,20 @@ function ProfileCtrl ($scope, $rootScope) {
 		a.download = "data.json";
 		a.click();
 	}
+
+	$scope.import = function(data)
+	{
+		data = JSON.parse(data);
+		LocalProduct.items = data.products;
+		LocalProduct.save();
+		LocalBill.items = data.bills;
+		LocalBill.save();
+		setTimeout(function() {
+			window.location.reload();
+		}, 100);
+		//
+	}
+	$scope.is_show_import = false;
 
 	$rootScope.menus = [{name:"Save", path:"/profile", icon:"fa-save", click:$scope.save }];
 }
