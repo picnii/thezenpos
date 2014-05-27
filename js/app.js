@@ -86,8 +86,8 @@ itemServices.factory('Customer', ['$resource',
 
 itemServices.factory('Store', ['$resource',
   function($resource){
-    return $resource('data/:name.json', {}, {
-      get: {method:'GET', params:{name:'store'}, isArray:false}
+    return $resource('../zenpos-backend/index.php/store/:service', {}, {
+      register: {method:'POST', params:{service:'register'}, isArray:false}
     });
   }]);
 

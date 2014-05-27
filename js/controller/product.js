@@ -14,10 +14,9 @@ function ProductCtrl($scope, $rootScope)
 	{
 		$scope.addItem($scope.newItem);
 		$scope.is_add_new = false;
-
 		$rootScope.menus = [{name:"Add New", path:"/products", icon:"fa-plus", click:$scope.onClickForAddNew }];
 		if($scope.store.is_use_stock)
-		$rootScope.menus.push({name:"Import", path:"/stock/import", icon:"fa-download"});
+			$rootScope.menus.push({name:"Import", path:"/stock/import", icon:"fa-download"});
 	}
 
 	$rootScope.menus = [{name:"Add New", path:"/products", icon:"fa-plus", click:$scope.onClickForAddNew }];
@@ -64,7 +63,7 @@ function ProductCtrl($scope, $rootScope)
 		item.initStock = 0;
 		item.currentStock =0;
 		LocalProduct.create(item, function(){
-			$scope.items = LocalProduct.query();
+			$scope.refresh();
 		});
 		$scope.is_add_new = false;
 	}

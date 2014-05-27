@@ -197,7 +197,7 @@ function LoginCtrl($scope, $location, $rootScope, $timeout) {
 		$location.path('/');
 }
 
-function RegisterCtrl($scope, $location, $rootScope, $timeout)
+function RegisterCtrl($scope, $location, $rootScope, $timeout, Store)
 {
 	
 	$scope.register = function(){
