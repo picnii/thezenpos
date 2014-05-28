@@ -7,16 +7,12 @@
 				<span class="test">{{types.length}}</span> types
 			</div>
 			<h2>Sales</h2>
-			<div class="graph" style="text-align:center;max-width:480px;">
-				<canvas id="sales-chart" width="480" height="240" ></canvas>
-			</div>	
+			<chart type="bar" data="sales_chart_data"></chart>	
 		</section>
 
 		<section ng-show="store.is_use_stock" style="text-align:center">
 			<h2>Stock</h2>
-			<div class="graph" style="text-align:center;max-width:480px;">
-				<canvas id="stock-chart" width="480" height="240" ></canvas>
-			</div>
+			<chart type="pie" data="stocks_data"></chart>	
 			<div style="display:inline-block;padding-right:5px;" ng-repeat="stock in stocks">
 				<div style="background:{{stock.color}};height:25px;width:25px;display:inline-block;"></div> {{stock.name}}<strong>({{stock.value}}) </strong>
 			</div>
@@ -24,9 +20,7 @@
 		
 		<section style="text-align:center">
 			<h2>Space Usage</h2>
-			<div class="graph" style="text-align:center;max-width:480px;">
-				<canvas id="space-chart" width="480" height="240" ></canvas>
-			</div>
+			<chart type="pie" data="space_data"></chart>
 			<div style="background:#F38630;height:25px;width:25px;display:inline-block;"></div> Used <div style="background:#69D2E7;height:25px;width:25px;display:inline-block;"></div> Empty 
 		</section>
 		

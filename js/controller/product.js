@@ -14,7 +14,6 @@ function ProductCtrl($scope, $rootScope)
 	{
 		$scope.addItem($scope.newItem);
 		$scope.is_add_new = false;
-
 		$rootScope.menus = [{name:"Add New", path:"/products", icon:"fa-plus", click:$scope.onClickForAddNew }];
 		if($scope.store.is_use_stock)
 			$rootScope.menus.push({name:"Import", path:"/stock/import", icon:"fa-download"});

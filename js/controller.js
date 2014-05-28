@@ -16,8 +16,8 @@ function InitCtrl($rootScope, $location, $timeout, Item)
 		LocalStore.authenticate(user, function(user_info){
 			if(user_info.status){
 				$rootScope.is_user_login = true;
-				$rootScope.user = user_info;
-				$rootScope.store.user = user_info;
+				$rootScope.user = user_info.user;
+				$rootScope.store.user = user_info.user;
 				callback();
 			}
 			else

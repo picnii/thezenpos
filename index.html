@@ -7,10 +7,17 @@
 	<link rel="stylesheet" href="lib/mobileangularjs/css/mobile-angular-ui-base.min.css">
 	<link rel="stylesheet" href="lib/mobileangularjs/css/mobile-angular-ui-desktop.min.css">
   <link rel="stylesheet" href="lib/mobileangularjs/css/mobile-angular-ui-print.min.css">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <title>Zen Pos : a Simple Point of sales</title>
   <!-- Phonegap -->
+<<<<<<< HEAD
   <script src="phonegap.js"></script>
   <script src="cordova.js"></script>
   <script src="camera.js"></script>
+=======
+  <!--<script src="phonegap.js"></script>
+  <script src="cordova.js"></script>-->
+>>>>>>> master
 
 
 	<script src="lib/angular/angular.min.js"></script>
@@ -37,6 +44,7 @@
   <script src="js/controller/stock.js"></script>
   <script src="js/controller/order.js"></script>
   <script src="js/controller/report.js"></script>
+<<<<<<< HEAD
    <script type="text/javascript" charset="utf-8">
 
     var pictureSource;   // picture source
@@ -129,13 +137,17 @@
     }
 
     </script>
+=======
+  <script src="widget/chart/widget.js"></script>
+>>>>>>> master
 </head>
 <body ng-app="myApp">
 	<!-- Sidebars -->
 
 <div class="hidden-print sidebar sidebar-left" toggleable parent-active-class="sidebar-left-in" id="mainSidebar">
-  <h1 class="app-name">Panel</h1>
-
+  
+    <div ng-show="is_user_login"  class="app-name" style="text-align:center;padding:10px;"><img src="images/zen-pos-300x121.png" style="max-height:50px;width:auto;"></div>
+  
   <div class="scrollable" ng-show="is_user_login">
     <div class="scrollable-content">
       <div class="list-group" toggle="off" bubble target="mainSidebar">
@@ -167,7 +179,7 @@
         <span>{{storeName}}</span>
       </div>
 
-      <div class="btn-group pull-left">
+      <div ng-show="is_user_login"  class="btn-group pull-left">
         <div ng-click="toggle('mainSidebar')" class="btn btn-navbar sidebar-toggle">
           <i class="fa fa-bars"></i> Menu
         </div>

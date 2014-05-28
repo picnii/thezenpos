@@ -68,8 +68,9 @@ function ReportCtrl($scope, $rootScope)
 			}
 		]
 	}
-	var ctx = document.getElementById("overall-chart").getContext("2d");
-	var myNewChart = new Chart(ctx).Line(data);
+	$scope.report_data = data;
+	//var ctx = document.getElementById("overall-chart").getContext("2d");
+	//var myNewChart = new Chart(ctx).Line(data);
 
 	$scope.reports = [];
 	for(var i =0; i < $scope.bills.length; i++)

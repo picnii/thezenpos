@@ -5,7 +5,8 @@ var app = angular.module('myApp', [
   "mobile-angular-ui",
   "mobile-angular-ui.touch",
   "mobile-angular-ui.scrollable",
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'chartDirective'
 ])
 
 app.config(function($routeProvider) {
@@ -92,8 +93,8 @@ itemServices.factory('Customer', ['$resource',
 
 itemServices.factory('Store', ['$resource',
   function($resource){
-    return $resource('data/:name.json', {}, {
-      get: {method:'GET', params:{name:'store'}, isArray:false}
+    return $resource('../zenpos-backend/index.php/store/:service', {}, {
+      register: {method:'POST', params:{service:'register'}, isArray:false}
     });
   }]);
 

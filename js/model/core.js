@@ -22,7 +22,6 @@ function LocalModel(storageName)
 
 	this._save = function(model)
 	{
-		
 		self.localStorage = JSON.stringify(model);
 		localStorage[self.localStorageName] = self.localStorage;
 		return true;
