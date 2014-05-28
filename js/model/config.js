@@ -55,6 +55,7 @@ LocalStore.load = function(callback)
 		new_store.receiver_position = 'Manager';
 		new_store.receiver = "Sompop Kulapalanont";
 		new_store.address = "1010 Suthisan Rd. Dindang Dindang Bangkok 10400"
+		new_store.tax = 7;
 		new_store.user ={};
 		if(typeof callback != 'undefined')
 			callback(new_store);

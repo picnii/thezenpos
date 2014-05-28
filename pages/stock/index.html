@@ -1,23 +1,25 @@
-<table class="table">
-	<thead>
-		<tr>
-			<th class="col-lg-6">Product</th>
-			<th class="col-lg-4"></th>
-			<th class="col-lg-2">Quantity</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr ng-repeat="item in items">
-			<td>{{item.name}}<br/><span class="item-type">({{item.type}})</span></td>
-			<td><div class="progress">
-  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="{{item.initStock}}" style="width: {{item.currentStock / item.initStock * 100 | number }}%;">
-    {{item.currentStock / item.initStock * 100 | number }}%
-  </div>
-</div></td>
-			<td>{{item.currentStock }} / {{item.initStock}} </td>
-		</tr>
-	</tbody>
-</table>
+<section class="container">
+	<table class="table">
+		<thead>
+			<tr>
+				<th class="col-lg-6">Product</th>
+				<th class="col-lg-4"></th>
+				<th class="col-lg-2">Quantity</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in items">
+				<td>{{item.name}}<br/><span class="item-type">({{item.type}})</span></td>
+				<td><div class="progress">
+	  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="{{item.initStock}}" style="width: {{item.currentStock / item.initStock * 100 | number }}%;">
+	    {{item.currentStock / item.initStock * 100 | number }}%
+	  </div>
+	</div></td>
+				<td>{{item.currentStock }} / {{item.initStock}} </td>
+			</tr>
+		</tbody>
+	</table>
+</section>
 <style type="text/css">
 	span.item-type
 	{
