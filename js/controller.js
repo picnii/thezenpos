@@ -1,8 +1,6 @@
 function InitCtrl($rootScope, $location, $timeout, Item)
 {
-	$rootScope.appName = "Menu"
 	$rootScope.storeName = "The Zen Pos"
-	//$rootScope.items = Item.query();
 	$rootScope.orders = [];
 	$rootScope.isLogin = function()
 	{
@@ -103,7 +101,7 @@ function InitCtrl($rootScope, $location, $timeout, Item)
 			$rootScope.checkLogin();
 		}
 	});
-	console.log('InitCtrl')
+	
 }
 
 app.run(InitCtrl)

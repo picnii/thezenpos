@@ -58,7 +58,7 @@ app.config(function($routeProvider) {
       }).when('/report', { 
          templateUrl: 'pages/report/index.html',
          controller: 'ReportCtrl'
-      })      ;
+      })
       // ...
   });
 
