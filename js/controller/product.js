@@ -85,30 +85,51 @@ function ProductCreateCtrl($scope, $rootScope, $location, $timeout)
 	{
 		item.initStock = 0;
 		item.currentStock =0;
+		if(item.have_photo)
+			item.img_src  = $scope.img_src;
 		LocalProduct.create(item, function(){
 			$location.path('/products');
 		});
 	}
 
-	$scope.takePhoto = function()
+	$scope.capturePhoto = function(type)
 	{
 		if (!navigator.camera) {
           alert("Camera API not supported", "Error");
 	          return;
 	      }
-		navigator.camera.getPicture(function(){
-				$scope.$apply($scope.successPhoto)
-			}, function(){
-				$scope.$apply($scope.failPhoto)
+		navigator.camera.getPicture(function(imageURI){
+				$scope.$apply(function(){
+					$scope.successPhoto(imageURI);
+				})
+			}, function(message){
+				$scope.$apply(function(){
+					$scope.failPhoto(message);
+				})
 			}, { quality: 40,
-	    	destinationType: Camera.DestinationType.DATA_URL });
+				sourceType:type,
+	    	destinationType: Camera.DestinationType.DATA_URL,
+	    		targetWidth: 150,
+  				targetHeight: 150
+	    	 });
 	}
+
+	$scope.takePhoto = function()
+	{
+		$scope.capturePhoto( Camera.PictureSourceType.CAMERA);
+	}
+
+	$scope.loadPhoto = function()
+	{
+		$scope.capturePhoto( Camera.PictureSourceType.PHOTOLIBRARY);
+	}
+
 	$scope.newItem = {};
-	$scope.newItem.img_src = ""
+	$scope.img_src = ""
 	$scope.newItem.have_photo = false;
 	$scope.successPhoto = function(imageURI)
 	{
-		$scope.newItem.img_src = "data:image/jpeg;base64," + imageURI;
+		$scope.img_src = "data:image/jpeg;base64," + imageURI;
 		$scope.newItem.have_photo = true;
 	}
 
