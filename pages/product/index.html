@@ -25,7 +25,8 @@
 						<input  ng-show="product.isEdit" type="text" ng-model="product.type">
 					</td>
 					<td>
-						<button  ng-hide="product.isEdit" ng-click="product.isEdit=true" class="btn btn-primary">Edit</button>
+						<button  ng-hide="product.isEdit" ng-click="product.isEdit=true" class="btn btn-primary">Quick Edit</button>
+						<a ng-href="#/products/update/{{product.id}}" ng-hide="product.isEdit" class="btn btn-primary">Full Edit</a>
 						<button  ng-show="product.isEdit" ng-click="product.save()" class="btn btn-primary">Save</button>
 						<button ng-show="product.isEdit" ng-click="product.delete()" class="btn btn-danger">X</button>
 					</td>

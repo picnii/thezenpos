@@ -1,24 +1,5 @@
 function ProductCtrl($scope, $rootScope)
 {
-
-	$scope.onClickForAddNew = function()
-	{
-		$scope.is_add_new = true;
-		$rootScope.menus = [{name:"BACK", path:"/products", icon:"fa-arrow-left", click:function(){
-			$scope.is_add_new = false;
-			$rootScope.menus = [{name:"Add New", path:"/products", icon:"fa-plus", click:$scope.onClickForAddNew }, {name:"Import", path:"/stock/import", icon:"fa-download"}];
-		} }, {name:"Save", path:"/products", icon:"fa-plus", click:$scope.onClickForSave }];	
-	}
-
-	$scope.onClickForSave = function()
-	{
-		$scope.addItem($scope.newItem);
-		$scope.is_add_new = false;
-		$rootScope.menus = [{name:"Add New", path:"/products", icon:"fa-plus", click:$scope.onClickForAddNew }];
-		if($scope.store.is_use_stock)
-			$rootScope.menus.push({name:"Import", path:"/stock/import", icon:"fa-download"});
-	}
-
 	$rootScope.menus = [{name:"Add New", path:"/products/create", icon:"fa-plus"}];
 	if($scope.store.is_use_stock)
 		$rootScope.menus.push({name:"Import", path:"/stock/import", icon:"fa-download"});
@@ -74,7 +55,7 @@ function ProductCreateCtrl($scope, $rootScope, $location, $timeout)
 	$scope.onClickForSave = function()
 	{
 		$timeout(function(){
-			$scope.addItem($scope.newItem);
+			$scope.addItem($scope.item);
 		}, 50)
 		
 	}
@@ -124,13 +105,13 @@ function ProductCreateCtrl($scope, $rootScope, $location, $timeout)
 		$scope.capturePhoto( Camera.PictureSourceType.PHOTOLIBRARY);
 	}
 
-	$scope.newItem = {};
+	$scope.item = {};
 	$scope.img_src = ""
-	$scope.newItem.have_photo = false;
+	$scope.item.have_photo = false;
 	$scope.successPhoto = function(imageURI)
 	{
 		$scope.img_src = "data:image/jpeg;base64," + imageURI;
-		$scope.newItem.have_photo = true;
+		$scope.item.have_photo = true;
 	}
 
 	$scope.failPhoto = function(message)
@@ -141,4 +122,84 @@ function ProductCreateCtrl($scope, $rootScope, $location, $timeout)
 		}, 0);
 		
 	}
+}
+
+function ProductUpdateCtrl($scope, $rootScope, $location, $timeout, $routeParams)
+{	
+	$scope.item = LocalProduct.get({id:$routeParams.id}, function(item){
+		if(!item.have_photo)
+			$scope.img_src = ""
+		else
+			$scope.img_src = item.img_src
+	});
+
+	$scope.saveItem = function(item)
+	{
+		if(item.have_photo)
+			item.img_src = $scope.img_src;
+		else
+			item.img_src = "";
+		LocalProduct.update(item, function(){
+			$location.path('/products');
+		});
+	}
+
+	$scope.successPhoto = function(imageURI)
+	{
+		$scope.img_src = "data:image/jpeg;base64," + imageURI;
+		$scope.item.have_photo = true;
+	}
+
+	$scope.failPhoto = function(message)
+	{
+		setTimeout(function() {
+		    // do your thing here!
+		    alert('Failed because: ' + message);
+		}, 0);
+		
+	}
+
+	$scope.capturePhoto = function(type)
+	{
+		if (!navigator.camera) {
+          alert("Camera API not supported", "Error");
+	          return;
+	      }
+		navigator.camera.getPicture(function(imageURI){
+				$scope.$apply(function(){
+					$scope.successPhoto(imageURI);
+				})
+			}, function(message){
+				$scope.$apply(function(){
+					$scope.failPhoto(message);
+				})
+			}, { quality: 40,
+				sourceType:type,
+	    	destinationType: Camera.DestinationType.DATA_URL,
+	    		targetWidth: 150,
+  				targetHeight: 150
+	    	 });
+	}
+
+	$scope.takePhoto = function()
+	{
+		$scope.capturePhoto( Camera.PictureSourceType.CAMERA);
+	}
+
+	$scope.loadPhoto = function()
+	{
+		$scope.capturePhoto( Camera.PictureSourceType.PHOTOLIBRARY);
+	}
+
+	$scope.onClickForSave = function()
+	{
+		$timeout(function(){
+			$scope.saveItem($scope.item);
+		}, 50)
+		
+	}
+
+	$rootScope.menus = [{name:"BACK", path:"/products", icon:"fa-arrow-left" }, {name:"Save", path:"/products/update/"+$routeParams.id, icon:"fa-plus", click:$scope.onClickForSave }];	
+
+
 }
