@@ -108,11 +108,6 @@ function InitCtrl($rootScope, $location, $timeout, Item)
 
 app.run(InitCtrl)
 
-function TestCtrl($scope)
-{
-	$scope.navigator = navigator;
-}
-
 function CustomerCtrl($scope, Customer, $rootScope)
 {
 	$rootScope.menus = [];
