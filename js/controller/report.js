@@ -90,6 +90,16 @@ function ReportCtrl($scope, $rootScope)
 		
 	}
 	console.log($scope.reports)
+	$scope.emailReport = function()
+	{
+		var html = document.getElementById('report-content').innerHTML;
+		window.plugin.email.open({
+		    to:      [$scope.user.email],
+		    subject: 'Sales Report',
+		    body:    html,
+		    isHtml:  true
+		});
+	}
 }
 
 

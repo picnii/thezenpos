@@ -1,5 +1,5 @@
 <div class="scrollable">
-<section class="scrollable-content container">
+<section id="report-content" class="scrollable-content container">
 	<div style="text-align:center;">
 		<h4>Sales Report</h4>
 		<chart type="line" data="report_data"></chart>
@@ -35,7 +35,7 @@
 </section>
 
 	<div class="btm-btn hidden-sm hidden-xs" >
-		<button onclick="importXLS()" class="btn btn-primary form-control"><i class="fa fa-download"></i> Download .XLS</button>
+		<button ng-click="emailReport()" class="btn btn-primary form-control"><i class="fa fa-download"></i> SEND REPORT TO EMAIL</button>
 	</div>
 </div>
 <style type="text/css">

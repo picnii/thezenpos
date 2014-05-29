@@ -1,84 +1,104 @@
+<div class="scrollable">
+<div calss="scrollable-content">
 <section class="bill-app container">
 	<div class="hidden-print">
 		
-		<section ng-show="isEdit">
-			<input type="checkbox" ng-model="isShowTax">show tax 
-			<input type="checkbox" ng-model="bill.isShowSign">show sign
+		<section ng-show="isEdit" class="row">
+			
+			<div class="col-xs-6">
+				<label for="is-show-tax">Tax</label>
+				<switch id="is-show-tax" ng-model="isShowTax"></switch>
+				
+			</div>
+			<div class="col-xs-6">
+				<label for="is-show-sign">Signature</label>
+				<switch id="is-show-sign" ng-model="bill.isShowSign"></switch>
+			</div>
 			
 		</section>
 	</div>
-	<div class="row">
-		<div class="col-xs-8">
-			<div >
-				<section style="float:left;">
-					<img ng-show="bill.isShowLogo" ng-src="{{bill.logo}}">
-				</section>
-				<section  style="float:left;">
-					<strong><u>Address</u></strong>
-					<p>{{store.address}}</p>
-				</section>
-				<section style="clear:both;"></section>
-			</div>
-			
-		</div>
-		<div class="col-xs-4">
-			<div class="right">
-				Bill no. {{bill.id}}
-				<p>{{bill.create_time | date :'longDate' }}</p>
-			</div>
-		</div>
-	</div>
-	<div style="height:50px;"></div>
-	<div class="center">
-		<h2>RECEIPT</h2>
-		
-	</div>
-	<div class="items">
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Product</th>
-					<th>Price per unit</th>
-					<th>Quantity</th>
-					<th>Amount</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="item in bill.carts">
-						<td>{{item.name}}</td>
-						<td>{{item.price}}</td>
-						<td> x {{item.count}}</td>
-						<td>{{item.price * item.count | currency:store.currency}}</td>
-				</tr>
-				<tr ng-show="isShowTax">
-					<td colspan="3">Tax ({{store.tax}}%)</td>
-					<td>{{bill.sum * store.tax /100 | currency:store.currency}}</td>
-				</tr>
-				<tr>
-					<td colspan="3">Total</td>
-					<td >{{bill.sum + (bill.sum * store.tax /100)*isShowTax | currency:store.currency}}</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div ng-show="bill.isShowSign" class="row fix-btm">
-
-		<div class="col-xs-6">
-			Date ____________________
-		</div>
-		<div class="col-xs-6">
-			<br/>
-			<br/>
-			<br/>
-			<div class='center'>
-				({{store.receiver}})<br/>
-				{{store.receiver_position}}
+	<section id="bill-content">
+		<div class="row">
+			<div class="col-xs-8">
+				<div >
+					<section style="float:left;">
+						<img ng-show="bill.isShowLogo" ng-src="{{bill.logo}}">
+					</section>
+					<section  style="float:left;">
+						<strong><u>Address</u></strong>
+						<p>{{store.address}}</p>
+					</section>
+					<section style="clear:both;"></section>
+				</div>
 				
 			</div>
+			<div class="col-xs-4">
+				<div class="right">
+					Bill no. {{bill.id}}
+					<p>{{bill.create_time | date :'longDate' }}</p>
+				</div>
+			</div>
 		</div>
+		<div style="height:50px;"></div>
+		<section id="bill-email-content">
+			<div class="center">
+				<h2>RECEIPT</h2>
+				
+			</div>
+			<div class="items">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Product</th>
+							<th>Price per unit</th>
+							<th>Quantity</th>
+							<th>Amount</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="item in bill.carts">
+								<td>{{item.name}}</td>
+								<td>{{item.price}}</td>
+								<td> x {{item.count}}</td>
+								<td>{{item.price * item.count | currency:store.currency}}</td>
+						</tr>
+						<tr ng-show="isShowTax">
+							<td colspan="3">Tax ({{store.tax}}%)</td>
+							<td>{{bill.sum * store.tax /100 | currency:store.currency}}</td>
+						</tr>
+						<tr ng-show="isShowTax">
+							<td colspan="3">Total</td>
+							<td >{{bill.sum + (bill.sum * store.tax /100)*isShowTax | currency:store.currency}}</td>
+						</tr>
+						<tr ng-hide="isShowTax">
+							<td colspan="3">Total</td>
+							<td >{{bill.sum  | currency:store.currency}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+		<div ng-show="bill.isShowSign" class="row fix-btm">
 
-	</div>
+			<div class="col-xs-6">
+				Date ____________________
+			</div>
+			<div class="col-xs-6">
+				<br/>
+				<br/>
+				<br/>
+				<div class='center'>
+					({{store.receiver}})<br/>
+					{{store.receiver_position}}
+					
+				</div>
+			</div>
+
+		</div>
+	</section>
 </section>
+</div>
+</div>
 <style type="text/css">
 	section.bill-app
 	{

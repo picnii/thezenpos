@@ -69,7 +69,7 @@ function OrderCtrl ($scope, Customer, $filter, $rootScope) {
 
 	$scope.openSearch = function(){
 		$scope.is_search_mode = true;
-		setTimeout(function() {document.getElementById('search-item-name').focus();}, 10);
+		setTimeout(function() {document.getElementById('search-item-name').focus();}, 100);
 		
 	}
 

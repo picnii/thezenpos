@@ -60,7 +60,7 @@ function ProductCreateCtrl($scope, $rootScope, $location, $timeout)
 		
 	}
 
-	$rootScope.menus = [{name:"BACK", path:"/products", icon:"fa-arrow-left" }, {name:"Save", path:"/products/create", icon:"fa-plus", click:$scope.onClickForSave }];	
+	$rootScope.menus = [{name:"BACK", path:"/products", icon:"fa-arrow-left" }, {name:"Save", path:"/products/create", icon:"fa-save", click:$scope.onClickForSave }];	
 
 	$scope.addItem = function(item)
 	{
@@ -199,7 +199,7 @@ function ProductUpdateCtrl($scope, $rootScope, $location, $timeout, $routeParams
 		
 	}
 
-	$rootScope.menus = [{name:"BACK", path:"/products", icon:"fa-arrow-left" }, {name:"Save", path:"/products/update/"+$routeParams.id, icon:"fa-plus", click:$scope.onClickForSave }];	
+	$rootScope.menus = [{name:"BACK", path:"/products", icon:"fa-arrow-left" }, {name:"Save", path:"/products/update/"+$routeParams.id, icon:"fa-save", click:$scope.onClickForSave }];	
 
 
 }

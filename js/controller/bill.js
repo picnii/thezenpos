@@ -77,6 +77,17 @@ function BillPrintCtrl($scope, $rootScope, $routeParams, $location, $timeout)
 		
 	}
 
+	$scope.onSendEmailBtn = function()
+	{
+		var html = document.getElementById('bill-email-content').innerHTML;
+		window.plugin.email.open({
+		    to:      [$scope.user.email],
+		    subject: 'Receipt no.' + $routeParams.id,
+		    body:    html,
+		    isHtml:  true
+		});
+	}
+
 	$scope.cancle = function()
 	{
 		if(confirm("Are you sure you going to cancle this bill"))
@@ -87,9 +98,16 @@ function BillPrintCtrl($scope, $rootScope, $routeParams, $location, $timeout)
 		}
 	}
 
-	$rootScope.menus = [{name:"Back", path:"/bill/"+ $routeParams.id, icon:"fa-arrow-left", click:$scope.onBackBtn},
+	/*
+	* Comment Because this is for web
+	*/
+	/*$rootScope.menus = [{name:"Back", path:"/bill/"+ $routeParams.id, icon:"fa-arrow-left", click:$scope.onBackBtn},
 		{name:"Print", path:"/bill", icon:"fa-print", click:$scope.onPrintBtn},
 		{name:"Edit", path:"/bill/" + $routeParams.id, icon:"fa-edit", click:$scope.onEditBtn}
+	];*/
+	$rootScope.menus = [{name:"Back", path:"/bill/"+ $routeParams.id, icon:"fa-arrow-left", click:$scope.onBackBtn},
+		{name:"Email Bill", path:"/bill/"+ $routeParams.id, icon:"fa-print", click:$scope.onSendEmailBtn},
+		{name:"Cancle Bill", path:"/bill/" + $routeParams.id, icon:"fa-times", click:$scope.cancle}
 	];
 	$scope.bill = LocalBill.get({id:$routeParams.id});
 	$scope.bill.sum = 0;
