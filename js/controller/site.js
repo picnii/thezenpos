@@ -223,7 +223,8 @@ function RegisterCtrl($scope, $location, $rootScope, $timeout, Store)
 			//$scope.saveStore($scope.store);
 			var user = {email:$scope.email, password:$scope.password};
 			$scope.store.user = user;
-			LocalStore.register($scope.store, function(store){
+			console.log('gonna send to server')
+			Store.register($scope.store, function(store){
 				console.log('done register');
 				console.log(store);
 				$scope.authenticate($scope.store.user, function(){

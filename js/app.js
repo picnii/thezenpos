@@ -1,7 +1,9 @@
+var HOST_PREFIX = "..:3000";
+
 //angular.module('myApp', ["mobile-angular-ui"]);
 var app = angular.module('myApp', [
   "ngRoute",
-  "itemServices",
+  "cloudServices",
   "mobile-angular-ui",
   "mobile-angular-ui.touch",
   "mobile-angular-ui.scrollable",
@@ -68,7 +70,7 @@ app.filter('new_currency', function() {
   };
 });
 
-var itemServices = angular.module('itemServices', ['ngResource']);
+var itemServices = angular.module('cloudServices', ['ngResource']);
 
 itemServices.factory('Item', ['$resource',
   function($resource){
@@ -87,7 +89,7 @@ itemServices.factory('Customer', ['$resource',
 
 itemServices.factory('Store', ['$resource',
   function($resource){
-    return $resource('../zenpos-backend/index.php/store/:service', {}, {
+    return $resource('http://localhost:3000/store/:service', {}, {
       register: {method:'POST', params:{service:'register'}, isArray:false}
     });
   }]);
